@@ -5,7 +5,17 @@
 1. What is software engineering? Explain what it includes.
 2. How engineering process is divided into different phases? What activities are involved in each phase?
 3. Why do we need software development process models?
+Answer 3:
+Software development can be organised in different ways and it is modelled in different manners.
+The process models give a structure for how it moves through the phases of definition, development and maintenance.
+Since each model has its own strenghts and weaknesses it depends on the situation which of the models fits best.
 4. How Spiral model differs from Waterfall model?
+Answer 4:
+The Pure Waterfall model goes through seperate phase one after the other like concept, requirements, design, coding and testing without going back.
+The Spiral model works differently: it splits the project into iterations, and each iteration deals with one or more major risks.
+Every iteration follows six steps: setting objectives and constraints, identifying and resolving risks, evaluating alternatives, building and checking the iteration's deliverables, planning the next iteration, and committing to it.
+Once the biggest risks have been handled, the spiral turns into a waterfall model for the rest of the project.
+
 5. What are the advantages of Modified Waterfall model over Pure Waterfall model?
 6. What are the advantages of iterative development?
 7. What are the advantages of RUP over other development process models?
