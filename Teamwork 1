@@ -3,7 +3,12 @@
 2601760 Hein, Patrick
 
 1. What is software engineering? Explain what it includes.
+Engineering is the anlysis,design,construction,verification and management of technical entities.
+
 2. How engineering process is divided into different phases? What activities are involved in each phase?
+The engineer needs to follow three generic phases; definition,development and maintenance. In definition we focused on the requirement and identied the software. 
+In the development, we focuse on how t will be developt (data,procedure..). In the maintenance, we need to focuse in all adaptations and all changes.
+
 3. Why do we need software development process models?
 4. How Spiral model differs from Waterfall model?
 5. What are the advantages of Modified Waterfall model over Pure Waterfall model?
