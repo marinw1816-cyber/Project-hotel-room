@@ -7,5 +7,14 @@
 3. Why do we need software development process models?
 4. How Spiral model differs from Waterfall model?
 5. What are the advantages of Modified Waterfall model over Pure Waterfall model?
+It has more flexibility than the Pure Waterfall model, because it partially allows undo changes or edit the previous phases.
+And also, Modified one can implement easy areas in advance without waiting for hard areas.
+
 6. What are the advantages of iterative development?
+When dealing with a huge project, it is difficult to gather and adjust the requirements and goals at once.
+But with iterative development, one can unterstand the project´s structure and reduce it´s risks while repeating the phases.
+
 7. What are the advantages of RUP over other development process models?
+The Rational Unifed Process promotes an iterative approach.
+As I mentioned at question 6, iterative development functions really well when dealing with huge projects.
+Each iteration builds on the work of the previous iteration to produce an executable that is one step closer to the final product.
