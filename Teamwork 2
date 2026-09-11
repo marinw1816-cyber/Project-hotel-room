@@ -4,11 +4,33 @@
 
 
 1- What is Agile software development, and why was it developed? Discuss the main problems in traditional software development that Agile attempts to address.
-Answer : 
+Answer 1: Agile is a group of methods based on iterative, incremental development, where requirements and the solution keep evolving through collaboration in self-organizing, cross-functional teams.
+It came up in the mid-90s as a pushback against heavyweight methods like Waterfall, which felt too regulated and micromanaged.
+It fixes the same problems Waterfall has: no going back once a phase is done, only the last phase gives you something usable, and it falls apart when requirements change mid-project.
+
 2- What are the four core values of the Agile Manifesto? Explain each value in your own words and give a practical example of how it could be applied in a software project.
+Answer 2: The slides only list twelve principles, not four named values, but they group into four themes:
+Working software over documentation, e.g. shipping a working login page instead of writing a spec first.
+Responding to change over sticking to a plan, e.g. reworking the backlog when the customer wants a different payment provider mid-project.
+Customer collaboration, e.g. a product owner sitting in on daily stand-ups.
+People and communication over rigid process, e.g. two developers fixing a bug together instead of writing tickets back and forth.
+
 3- What are the most important principles of Agile development? Select the five principles you consider most important and explain your choices.
+Answer 3: Welcoming changing requirements, delivering working software frequently, face-to-face communication, continuous technical excellence, and regularly adapting to change.
+The first is really what separates Agile from Waterfall in the first place. Frequent delivery matters because without something real to react to, "adapting to change" doesn't mean much.
+Face-to-face talk cuts down on misunderstandings, technical excellence keeps the fast pace from turning into messy code, and regular adaptation ties it all together.
+
 4- Compare RUP and Agile. What are their main similarities and differences in terms of planning, documentation, iterations, customer involvement, and requirements?
+Answer 4: RUP works through fixed phases (Inception, Elaboration, Construction, Transition) and documents heavily via Use Cases.
+Agile only plans short-term and documents as needed. Both are iterative, but RUP's iterations sit inside those phases while Agile repeats short 1-4 week cycles, doing planning through testing each time.
+RUP involves the customer mainly through reviews, Agile has daily close cooperation. RUP treats requirements as something to capture formally, Agile just expects them to keep changing.
+
 5- Compare the Spiral model and Agile development. How do they deal with risk, change, iteration, and customer feedback?
+Answer 5: Spiral is built around risk, each iteration exists to resolve specific risks before moving on.
+Agile doesn't have that step, it lowers risk indirectly just by shipping often. Spiral allows change only between iterations, decided during planning; Agile welcomes change constantly, that's basically its whole point.
+Spiral eventually turns into a Waterfall once the big risks are handled, Agile never graduates into anything else.
+And feedback differs too: Spiral gets it at fixed checkpoints (where the project can even be cancelled), Agile gets it continuously.
+
 6- A customer frequently changes the requirements of a software project. Which development model—RUP, Spiral, or Agile—would you recommend? Explain your team's choice.
 7-Compare Scrum, Extreme Programming (XP), and Feature-Driven Development (FDD). What are the main characteristics of each model, and when would you choose one over the others?
 What are the main advantages and disadvantages of Scrum? Discuss situations in which Scrum may work well and situations in which it may not be suitable.
