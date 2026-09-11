@@ -10,10 +10,35 @@ Answer :
 4- Compare RUP and Agile. What are their main similarities and differences in terms of planning, documentation, iterations, customer involvement, and requirements?
 5- Compare the Spiral model and Agile development. How do they deal with risk, change, iteration, and customer feedback?
 6- A customer frequently changes the requirements of a software project. Which development model—RUP, Spiral, or Agile—would you recommend? Explain your team's choice.
+Answer 6: We recommend Agile-would because you can change requireents even late in development. And it is designed to handle changing and evolving requirements. 
+Agile divides development into short iterations or sprints. At the end of each iteration, the customer can review the product, provide feedback, and request changes. 
+
 7-Compare Scrum, Extreme Programming (XP), and Feature-Driven Development (FDD). What are the main characteristics of each model, and when would you choose one over the others?
-What are the main advantages and disadvantages of Scrum? Discuss situations in which Scrum may work well and situations in which it may not be suitable.
-Explain the three main Scrum roles: Product Owner, Scrum Master, and Developers. What are their responsibilities, and how should they work together?
-What are Scrum artifacts and events? Explain how the Product Backlog, Sprint Backlog, Increment, Sprint, Daily Scrum, Sprint Review, and Sprint Retrospective contribute to a project.
+Answer 7: Scrum focuses primarily on managing the development process. Work is divided into short Sprints, and requirements are maintained in a prioritized Product Backlog. 
+The team reviews progress regularly and adapts to changing requirements. You choose scrum when you need a simple framework for organizing a team, prioritizing changing requirements.
+
+8-What are the main advantages and disadvantages of Scrum? Discuss situations in which Scrum may work well and situations in which it may not be suitable.
+Answer 8: Scrum can handles changing requirements, frequent delivery, continous feedback and improved teamwork. But it requires experienced and disciplined teams, scope can change frequently and scaling can be difficult.
+Scrum work well when requirements are uncertain , the customer needs to provide regular feedback but it may not be suitable when requirements are completely fixed and unlike to change and when the project requires a detailed plan.
+
+9-Explain the three main Scrum roles: Product Owner, Scrum Master, and Developers. What are their responsibilities, and how should they work together?
+ANswer 9: The owner is responsible for defining the features of the product and priotirizing the backlog.
+The scrum Master acts as a facilitator for the team, ensuring that the Scrum process is fllowedand removing any obtacles.
+Developpers are reponsible for delivering a potentially shippable product increment at he end od each sprint.
+The Product Owner sets the priorities, the Developers build the product, and the Scrum Master supports the team. They work together to achieve the Sprint Goal and deliver value.
+
+10-What are Scrum artifacts and events? Explain how the Product Backlog, Sprint Backlog, Increment, Sprint, Daily Scrum, Sprint Review, and Sprint Retrospective contribute to a project.
+Answer 10: Scrum artifacts are important information used to plan and track the work. Scrum events are activities where the team plans, discusses, reviews, and improves their work.
+Product Backlog: It contains all the work and features that need to be completed for the product.
+Sprint Backlog: It contains the tasks selected for the current Sprint and helps the Developers focus on their work.
+Increment: It is the completed and usable part of the product delivered at the end of a Sprint.
+Sprint: It is a fixed period when the Scrum Team works together to achieve a specific goal and deliver an Increment.
+Sprint planning: A meeting whre the team plans for the upcoming sprint.
+Daily Scrum: It is a short daily meeting where Developers discuss progress and plan their work for the day.
+Sprint Review: It is a meeting where the team shows the completed work, receives feedback, and discusses what to do next.
+Sprint Retrospective: It is a meeting where the team discusses what went well, what could be improved, and how to work better in the next Sprint.
+
+
 Imagine that your team is developing a mobile application using Scrum. Design one Sprint for the project, including the Sprint Goal, some Product Backlog items, Sprint activities, and expected Increment.
 What are the main roles and practices in Extreme Programming (XP)? Discuss how practices such as pair programming, test-driven development, continuous integration, and refactoring improve software quality.
 What are the main advantages and disadvantages of XP? Compare XP with Scrum and discuss which type of project would benefit most from XP.
