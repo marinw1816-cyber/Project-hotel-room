@@ -66,7 +66,7 @@ What are the main roles and practices in Extreme Programming (XP)? Discuss how p
 What are the main advantages and disadvantages of XP? Compare XP with Scrum and discuss which type of project would benefit most from XP.
 What is Feature-Driven Development (FDD)? Explain its main features and describe how FDD organizes software development around features.
 Case study: Your team must develop a large online shopping system. Requirements are expected to change frequently, the customer wants regular demonstrations, and the system must be delivered incrementally.
-Which development model or combination of models would you choose—Scrum, XP, FDD, RUP, Spiral, or another approach? Justify your choice and explain how your team would organize the development process.
+15- Which development model or combination of models would you choose—Scrum, XP, FDD, RUP, Spiral, or another approach? Justify your choice and explain how your team would organize the development process.
 Answer 15: We'd go with Scrum here, maybe mixed with some XP practices on the technical side.
 Scrum fits because it's built exactly for this: regular demos happen through Sprint Reviews, delivery is incremental since every sprint ends with a shippable increment, and the backlog gets re-prioritized each sprint instead of being locked in from the start like with RUP or Waterfall.
 Since it's a big system, throwing in XP stuff like continuous integration and test-driven development would help keep the code from turning into a mess as it grows.
