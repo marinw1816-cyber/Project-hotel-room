@@ -1,1 +1,21 @@
+2601764 Seungheon Sa
+2601783 WASIER Marin
+2601760 Hein, Patrick
 
+
+1- What is Agile software development, and why was it developed? Discuss the main problems in traditional software development that Agile attempts to address.
+2- What are the four core values of the Agile Manifesto? Explain each value in your own words and give a practical example of how it could be applied in a software project.
+3- What are the most important principles of Agile development? Select the five principles you consider most important and explain your choices.
+4- Compare RUP and Agile. What are their main similarities and differences in terms of planning, documentation, iterations, customer involvement, and requirements?
+5- Compare the Spiral model and Agile development. How do they deal with risk, change, iteration, and customer feedback?
+6- A customer frequently changes the requirements of a software project. Which development model—RUP, Spiral, or Agile—would you recommend? Explain your team's choice.
+Compare Scrum, Extreme Programming (XP), and Feature-Driven Development (FDD). What are the main characteristics of each model, and when would you choose one over the others?
+What are the main advantages and disadvantages of Scrum? Discuss situations in which Scrum may work well and situations in which it may not be suitable.
+Explain the three main Scrum roles: Product Owner, Scrum Master, and Developers. What are their responsibilities, and how should they work together?
+What are Scrum artifacts and events? Explain how the Product Backlog, Sprint Backlog, Increment, Sprint, Daily Scrum, Sprint Review, and Sprint Retrospective contribute to a project.
+Imagine that your team is developing a mobile application using Scrum. Design one Sprint for the project, including the Sprint Goal, some Product Backlog items, Sprint activities, and expected Increment.
+What are the main roles and practices in Extreme Programming (XP)? Discuss how practices such as pair programming, test-driven development, continuous integration, and refactoring improve software quality.
+What are the main advantages and disadvantages of XP? Compare XP with Scrum and discuss which type of project would benefit most from XP.
+What is Feature-Driven Development (FDD)? Explain its main features and describe how FDD organizes software development around features.
+Case study: Your team must develop a large online shopping system. Requirements are expected to change frequently, the customer wants regular demonstrations, and the system must be delivered incrementally.
+Which development model or combination of models would you choose—Scrum, XP, FDD, RUP, Spiral, or another approach? Justify your choice and explain how your team would organize the development process.
