@@ -15,8 +15,33 @@ What are the main advantages and disadvantages of Scrum? Discuss situations in w
 Explain the three main Scrum roles: Product Owner, Scrum Master, and Developers. What are their responsibilities, and how should they work together?
 What are Scrum artifacts and events? Explain how the Product Backlog, Sprint Backlog, Increment, Sprint, Daily Scrum, Sprint Review, and Sprint Retrospective contribute to a project.
 Imagine that your team is developing a mobile application using Scrum. Design one Sprint for the project, including the Sprint Goal, some Product Backlog items, Sprint activities, and expected Increment.
+
+Sprint Goal : To construct a sign in/sign up page.
+Product Backlog Items : Choosing a proper authentication method, Making a decision about "Forgot Password?", Choosing a password restricts.
+Sprint Activities : In Daily Scrum, we´ll discuss about the previous scrums, which backlog items to deal with today, what are the main problems at this point. After 2 to 4 weeks, we´ll do a sprint review and retrospective.
+
 What are the main roles and practices in Extreme Programming (XP)? Discuss how practices such as pair programming, test-driven development, continuous integration, and refactoring improve software quality.
+
+pair programming : Two developers make a team and work together. While one is coding, the other one reviews the code in real-time. This practice is useful since it automatically promote the communication
+between developers and the quality of the codes increases.
+test-driven development : You construct some tests based on requirements and expectations. After you develop the actual code, you run those tests. In that way, you can determine whether your code is doing
+what it supposed to do or not.
+continuous integration : CI means you commit changes into the main branch frequently. By doing that, you can detect issues associated with integration earlier.
+refactoring : Refactoring does not change how codes works. But as it changes how the code looks, it helps making it clear for other people and even for yourself.
+
 What are the main advantages and disadvantages of XP? Compare XP with Scrum and discuss which type of project would benefit most from XP.
+
+Advantages : It emphasizes tests and CI, preventing and reducing defects and issues. It also promotes communication between teams and with customers, making changes of requirements to be applied fast.
+Disadvantages : It´s not a traditional methodology, so some senior developers or teams might have troubles implementing these methods. And since it´s ´extreme´ programming, some principals will be too tough for someone
+has been working with less restricts.
+If the project is expected to have frequents changes in requirements and required to have high quality/easy maintenece codes, it would benefit most from XP.
+
 What is Feature-Driven Development (FDD)? Explain its main features and describe how FDD organizes software development around features.
+
+FDD is an agile software development methodology which focuses on delivering tangible, working software features within short iterations.
+Main features : Developing by Feature(Feature is a small unit that performs a single task. The system is developed by building a series of these features.), Short iterations(Development is broken into
+short cycles, typically ranging from a few days to a couple of weeks, allowing for regular and timely delivery of software.)
+In FDD, you use short term iterations, which is consisted with Build the overall model, Specify the feature list, Make plans for the individual tasks, Feature design and Implementation.
+
 Case study: Your team must develop a large online shopping system. Requirements are expected to change frequently, the customer wants regular demonstrations, and the system must be delivered incrementally.
 Which development model or combination of models would you choose—Scrum, XP, FDD, RUP, Spiral, or another approach? Justify your choice and explain how your team would organize the development process.
