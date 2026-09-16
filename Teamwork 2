@@ -1,19 +1,67 @@
+Team: Exchange student
 2601764 Seungheon Sa
 2601783 WASIER Marin
 2601760 Hein, Patrick
 
 
 1- What is Agile software development, and why was it developed? Discuss the main problems in traditional software development that Agile attempts to address.
-Answer : 
+Answer 1: Agile is a group of methods based on iterative, incremental development, where requirements and the solution keep evolving through collaboration in self-organizing, cross-functional teams.
+It came up in the mid-90s as a pushback against heavyweight methods like Waterfall, which felt too regulated and micromanaged.
+It fixes the same problems Waterfall has: no going back once a phase is done, only the last phase gives you something usable, and it falls apart when requirements change mid-project.
+
 2- What are the four core values of the Agile Manifesto? Explain each value in your own words and give a practical example of how it could be applied in a software project.
+Answer 2: The slides only list twelve principles, not four named values, but they group into four themes:
+Working software over documentation, e.g. shipping a working login page instead of writing a spec first.
+Responding to change over sticking to a plan, e.g. reworking the backlog when the customer wants a different payment provider mid-project.
+Customer collaboration, e.g. a product owner sitting in on daily stand-ups.
+People and communication over rigid process, e.g. two developers fixing a bug together instead of writing tickets back and forth.
+
 3- What are the most important principles of Agile development? Select the five principles you consider most important and explain your choices.
+Answer 3: Welcoming changing requirements, delivering working software frequently, face-to-face communication, continuous technical excellence, and regularly adapting to change.
+The first is really what separates Agile from Waterfall in the first place. Frequent delivery matters because without something real to react to, "adapting to change" doesn't mean much.
+Face-to-face talk cuts down on misunderstandings, technical excellence keeps the fast pace from turning into messy code, and regular adaptation ties it all together.
+
 4- Compare RUP and Agile. What are their main similarities and differences in terms of planning, documentation, iterations, customer involvement, and requirements?
+Answer 4: RUP works through fixed phases (Inception, Elaboration, Construction, Transition) and documents heavily via Use Cases.
+Agile only plans short-term and documents as needed. Both are iterative, but RUP's iterations sit inside those phases while Agile repeats short 1-4 week cycles, doing planning through testing each time.
+RUP involves the customer mainly through reviews, Agile has daily close cooperation. RUP treats requirements as something to capture formally, Agile just expects them to keep changing.
+
 5- Compare the Spiral model and Agile development. How do they deal with risk, change, iteration, and customer feedback?
+Answer 5: Spiral is built around risk, each iteration exists to resolve specific risks before moving on.
+Agile doesn't have that step, it lowers risk indirectly just by shipping often. Spiral allows change only between iterations, decided during planning; Agile welcomes change constantly, that's basically its whole point.
+Spiral eventually turns into a Waterfall once the big risks are handled, Agile never graduates into anything else.
+And feedback differs too: Spiral gets it at fixed checkpoints (where the project can even be cancelled), Agile gets it continuously.
+
 6- A customer frequently changes the requirements of a software project. Which development model—RUP, Spiral, or Agile—would you recommend? Explain your team's choice.
+Answer 6: We recommend Agile-would because you can change requireents even late in development. And it is designed to handle changing and evolving requirements. 
+Agile divides development into short iterations or sprints. At the end of each iteration, the customer can review the product, provide feedback, and request changes. 
+
 7-Compare Scrum, Extreme Programming (XP), and Feature-Driven Development (FDD). What are the main characteristics of each model, and when would you choose one over the others?
-What are the main advantages and disadvantages of Scrum? Discuss situations in which Scrum may work well and situations in which it may not be suitable.
-Explain the three main Scrum roles: Product Owner, Scrum Master, and Developers. What are their responsibilities, and how should they work together?
-What are Scrum artifacts and events? Explain how the Product Backlog, Sprint Backlog, Increment, Sprint, Daily Scrum, Sprint Review, and Sprint Retrospective contribute to a project.
+Answer 7: Scrum focuses primarily on managing the development process. Work is divided into short Sprints, and requirements are maintained in a prioritized Product Backlog. 
+The team reviews progress regularly and adapts to changing requirements. You choose scrum when you need a simple framework for organizing a team, prioritizing changing requirements.
+
+8-What are the main advantages and disadvantages of Scrum? Discuss situations in which Scrum may work well and situations in which it may not be suitable.
+Answer 8: Scrum can handles changing requirements, frequent delivery, continous feedback and improved teamwork. But it requires experienced and disciplined teams, scope can change frequently and scaling can be difficult.
+Scrum work well when requirements are uncertain , the customer needs to provide regular feedback but it may not be suitable when requirements are completely fixed and unlike to change and when the project requires a detailed plan.
+
+9-Explain the three main Scrum roles: Product Owner, Scrum Master, and Developers. What are their responsibilities, and how should they work together?
+ANswer 9: The owner is responsible for defining the features of the product and priotirizing the backlog.
+The scrum Master acts as a facilitator for the team, ensuring that the Scrum process is fllowedand removing any obtacles.
+Developpers are reponsible for delivering a potentially shippable product increment at he end od each sprint.
+The Product Owner sets the priorities, the Developers build the product, and the Scrum Master supports the team. They work together to achieve the Sprint Goal and deliver value.
+
+10-What are Scrum artifacts and events? Explain how the Product Backlog, Sprint Backlog, Increment, Sprint, Daily Scrum, Sprint Review, and Sprint Retrospective contribute to a project.
+Answer 10: Scrum artifacts are important information used to plan and track the work. Scrum events are activities where the team plans, discusses, reviews, and improves their work.
+Product Backlog: It contains all the work and features that need to be completed for the product.
+Sprint Backlog: It contains the tasks selected for the current Sprint and helps the Developers focus on their work.
+Increment: It is the completed and usable part of the product delivered at the end of a Sprint.
+Sprint: It is a fixed period when the Scrum Team works together to achieve a specific goal and deliver an Increment.
+Sprint planning: A meeting whre the team plans for the upcoming sprint.
+Daily Scrum: It is a short daily meeting where Developers discuss progress and plan their work for the day.
+Sprint Review: It is a meeting where the team shows the completed work, receives feedback, and discusses what to do next.
+Sprint Retrospective: It is a meeting where the team discusses what went well, what could be improved, and how to work better in the next Sprint.
+
+
 Imagine that your team is developing a mobile application using Scrum. Design one Sprint for the project, including the Sprint Goal, some Product Backlog items, Sprint activities, and expected Increment.
 
 Sprint Goal : To construct a sign in/sign up page.
@@ -44,4 +92,8 @@ short cycles, typically ranging from a few days to a couple of weeks, allowing f
 In FDD, you use short term iterations, which is consisted with Build the overall model, Specify the feature list, Make plans for the individual tasks, Feature design and Implementation.
 
 Case study: Your team must develop a large online shopping system. Requirements are expected to change frequently, the customer wants regular demonstrations, and the system must be delivered incrementally.
-Which development model or combination of models would you choose—Scrum, XP, FDD, RUP, Spiral, or another approach? Justify your choice and explain how your team would organize the development process.
+15- Which development model or combination of models would you choose—Scrum, XP, FDD, RUP, Spiral, or another approach? Justify your choice and explain how your team would organize the development process.
+Answer 15: We'd go with Scrum here, maybe mixed with some XP practices on the technical side.
+Scrum fits because it's built exactly for this: regular demos happen through Sprint Reviews, delivery is incremental since every sprint ends with a shippable increment, and the backlog gets re-prioritized each sprint instead of being locked in from the start like with RUP or Waterfall.
+Since it's a big system, throwing in XP stuff like continuous integration and test-driven development would help keep the code from turning into a mess as it grows.
+Team-wise: a Product Owner handling the backlog based on customer feedback, a Scrum Master keeping the sprints on track, and developers using CI/TDD so technical debt doesn't pile up. RUP or Spiral would fit worse since they're more predictive and don't handle constantly changing requirements as well as Scrum does.
