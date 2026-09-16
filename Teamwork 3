@@ -23,10 +23,30 @@ Answer 5 : Infrastructure as Code (IaC) is the practice of managing and provisio
 Benefits are that automatically creates and manages infrastructure, ensures infrastructure is configured the same way every time and allows infrastructure changes to be included in automated deployment pipelines.
 
 6- What is configuration management, and how can Ansible support it?
+Answer 6: Configuration management keeps the configuration consistent across systems.
+Ansible is primarily used for it and and it specifically automates installing software, configuring servers, creating users, deploying applications, applying consistent settings across  multiple machines.
+It also helps keep the environments consistent and reduces manual administration.
+
 7- What are containers, and why are they useful in DevOps?
+Answer 7: Docker uses containers to package an application together with the components it needs to run.
+For example: A web application can be packaged into a Docker image containing the application, required libraries, and runtime configuration.
+It is very useful because containers reduce differences between development, testing, and production environments.
+
 8- What is container orchestration, and what role does Kubernetes play?
+Answer 8: Kubernetes is a container orchestration platform. It deploys, scales, schedules, and manages containerized workloads across clusters.
+It manages containerized applications, especially when many containers need to run across multiple machines. 
+Kubernetes automates a lot of this operational work which is very important because managing containers manually becomes difficult at scale.
+
 9- What are monitoring and observability, and which tools support them?
+Answer 9: Continuous monitoring is an ongoing monitoring of systems, applications, and infrastructure to ensure health, performance and security. 
+The first tool is Prometheus: It is a metrics monitoring and alerting system which collects numerical measurements such as CPU usage, memory usage, requests rates, error rates, application performance indicators.
+The second one is Grafana: It is used to visualize monitoring and observability data. It can create dashboards showing metrics from systems such as Prometheus. For example: A dashboard might show CPU utilization, request latency, error rates, and service availability in one place
+This is important so DevOps teams can quickly detect and investigate problems.
+
 10-What is DevSecOps, and how does it improve software security?
+Answer 10: DevSecOps involves embedding security practices throughout the development process. It involves integrating security checks in CI/CD pipelines to detct vulnerabilities earlier.
+Example tools are SonarQube, Snyk, OWASP Dependency-Check
+
 11-Why is automated testing important in DevOps?
 12-What is configuration drift, and how can it be reduced?
 13- Why are small and frequent deployments considered a DevOps best practice?
