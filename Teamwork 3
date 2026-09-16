@@ -3,11 +3,25 @@ Team: Exchange student
 2601783 WASIER Marin
 2601760 Hein, Patrick
 
+
 1- What is the main purpose of DevOps?
+Answer 1 : DevOps is a collection of methods that combines softwaare development and IT operations
+to shorthen the systems development life cycle and deliver high-quality software continuously.
+
 2- What are the main stages of a CI/CD pipeline?
+Answer 2 : For CI developers frquently merge code changes into a shared repository.
+For CD the code changes are automatically tested and prepared for release to production.
+
 3- Which DevOps tools can be used for source control, CI/CD, containerization, infrastructure, configuration management, and monitoring?
+Answer 3 : We can use Git for source control, Github actions for CI/CD, Docker for containerization, Terraform for infrastructure, Ansible for the management and Prometheus for monitoring.
+
 4- How can Git support effective collaboration in DevOps?
+Answer 4: Git provides traceability and makes automated CI/CD worflows possible because pipeline systems can react to repository changes.
+
 5- What is Infrastructure as Code (IaC), and what are its benefits?
+Answer 5 : Infrastructure as Code (IaC) is the practice of managing and provisioning IT infrastructure through machine-readable configuration files instead of manually configuring servers, networks, databases, and other resources.
+Benefits are that automatically creates and manages infrastructure, ensures infrastructure is configured the same way every time and allows infrastructure changes to be included in automated deployment pipelines.
+
 6- What is configuration management, and how can Ansible support it?
 Answer 6: Configuration management keeps the configuration consistent across systems.
 Ansible is primarily used for it and and it specifically automates installing software, configuring servers, creating users, deploying applications, applying consistent settings across  multiple machines.
