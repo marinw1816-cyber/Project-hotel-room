@@ -48,7 +48,29 @@ Answer 10: DevSecOps involves embedding security practices throughout the develo
 Example tools are SonarQube, Snyk, OWASP Dependency-Check
 
 11-Why is automated testing important in DevOps?
+
+It is important because testing repeates regularly, so it´s easier to identify the issues and deal with it quickly.
+
 12-What is configuration drift, and how can it be reduced?
+
+Configuration drift is the gradual and often unintended divergence of a system´s actual settings from its intended baseline state over time.
+It can be reduced by adopting IaC using tools like terraform.
+
 13- Why are small and frequent deployments considered a DevOps best practice?
+
+Because they make software delivery safer, faster, and easier to manage.
+For example, each deployment contains fewer changes, so automated tests can more easily identify problems.
+
 14- What are the main steps for responding to a failed deployment?
+
+Detect → Assess → Stop → Roll back → Investigate → Fix → Test → Redeploy → Learn.
+
 15- How can Git, Jenkins, Docker, Kubernetes, Terraform, Ansible, Prometheus, and Grafana work together?
+
+1. Git (and Github) - Manages Codes and Documents with Branching, Merging, Push/Pull, Repository...
+2. Jenkins - Automates activities such as building, testing, and deploying software
+3. Docker and Kubernetes - Creates portable containers which contains products from previous steps and manage them
+4. Terraform - Defines and provisions infrastructure using configuration files
+5. Ansible - Automates server configuration, application deployment, and repetitive operational tasks
+6. Prometheus - Collects time-series metrics and supports monitoring and alerts of the final product
+7. Grafana - Displays metrics and other monitoring data through dashboards so that operations team can visually identify the issues more easily.
