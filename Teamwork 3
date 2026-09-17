@@ -3,7 +3,6 @@ Team: Exchange student
 2601783 WASIER Marin
 2601760 Hein, Patrick
 
-
 1- What is the main purpose of DevOps?
 Answer 1 : DevOps is a collection of methods that combines softwaare development and IT operations
 to shorthen the systems development life cycle and deliver high-quality software continuously.
@@ -63,7 +62,7 @@ For example, each deployment contains fewer changes, so automated tests can more
 
 14- What are the main steps for responding to a failed deployment?
 
-Detect → Assess → Stop → Roll back → Investigate → Fix → Test → Redeploy → Learn.
+Detect → Assess → Stop → Roll back → Investigate → Fix → Test → Redeploy
 
 15- How can Git, Jenkins, Docker, Kubernetes, Terraform, Ansible, Prometheus, and Grafana work together?
 
