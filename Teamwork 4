@@ -1,0 +1,10 @@
+1. What are the main responsibilities of the customer and the software engineer during requirements engineering? Discuss why both sides need to participate actively.
+2. Why is communication difficult during requirements analysis? As a team, identify common causes of misunderstanding and suggest ways to reduce them.
+3. Requirements analysis focuses on what the system should do rather than how it should be implemented. Discuss why this separation is useful during early analysis.
+4. What information should an analyst collect during problem recognition? Create a list of questions that could help a team understand the customer's real problem.
+5. Compare a simple question-and-answer interview with the FAST approach. Discuss the strengths of each approach and explain when a team might prefer a collaborative meeting.
+6. Design a FAST meeting for requirements gathering. Decide who should participate, what rules should be followed, how ideas should be recorded, and how the final consensus list should be created.
+7. What is the purpose of a mini-specification? Discuss what information should be included in a good mini-specification and how it can help later development activities.
+8. Compare the three QFD requirement types: normal, expected, and exciting. Create several examples for a software system and explain why each example belongs to its category.
+9. How can prototyping help when customers and developers are not completely sure about the requirements? Discuss its possible benefits for communication, understanding, and requirements refinement.
+10. How can FAST and QFD be used together during requirements engineering? Develop a team process that shows how customer needs could be collected, discussed, prioritized, and transformed into software requirements.
