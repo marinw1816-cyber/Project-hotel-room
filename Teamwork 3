@@ -3,7 +3,6 @@ Team: Exchange student
 2601783 WASIER Marin
 2601760 Hein, Patrick
 
-
 1- What is the main purpose of DevOps?
 Answer 1 : DevOps is a collection of methods that combines softwaare development and IT operations
 to shorthen the systems development life cycle and deliver high-quality software continuously.
@@ -23,12 +22,54 @@ Answer 5 : Infrastructure as Code (IaC) is the practice of managing and provisio
 Benefits are that automatically creates and manages infrastructure, ensures infrastructure is configured the same way every time and allows infrastructure changes to be included in automated deployment pipelines.
 
 6- What is configuration management, and how can Ansible support it?
+Answer 6: Configuration management keeps the configuration consistent across systems.
+Ansible is primarily used for it and and it specifically automates installing software, configuring servers, creating users, deploying applications, applying consistent settings across  multiple machines.
+It also helps keep the environments consistent and reduces manual administration.
+
 7- What are containers, and why are they useful in DevOps?
+Answer 7: Docker uses containers to package an application together with the components it needs to run.
+For example: A web application can be packaged into a Docker image containing the application, required libraries, and runtime configuration.
+It is very useful because containers reduce differences between development, testing, and production environments.
+
 8- What is container orchestration, and what role does Kubernetes play?
+Answer 8: Kubernetes is a container orchestration platform. It deploys, scales, schedules, and manages containerized workloads across clusters.
+It manages containerized applications, especially when many containers need to run across multiple machines. 
+Kubernetes automates a lot of this operational work which is very important because managing containers manually becomes difficult at scale.
+
 9- What are monitoring and observability, and which tools support them?
+Answer 9: Continuous monitoring is an ongoing monitoring of systems, applications, and infrastructure to ensure health, performance and security. 
+The first tool is Prometheus: It is a metrics monitoring and alerting system which collects numerical measurements such as CPU usage, memory usage, requests rates, error rates, application performance indicators.
+The second one is Grafana: It is used to visualize monitoring and observability data. It can create dashboards showing metrics from systems such as Prometheus. For example: A dashboard might show CPU utilization, request latency, error rates, and service availability in one place
+This is important so DevOps teams can quickly detect and investigate problems.
+
 10-What is DevSecOps, and how does it improve software security?
+Answer 10: DevSecOps involves embedding security practices throughout the development process. It involves integrating security checks in CI/CD pipelines to detct vulnerabilities earlier.
+Example tools are SonarQube, Snyk, OWASP Dependency-Check
+
 11-Why is automated testing important in DevOps?
+
+It is important because testing repeates regularly, so it´s easier to identify the issues and deal with it quickly.
+
 12-What is configuration drift, and how can it be reduced?
+
+Configuration drift is the gradual and often unintended divergence of a system´s actual settings from its intended baseline state over time.
+It can be reduced by adopting IaC using tools like terraform.
+
 13- Why are small and frequent deployments considered a DevOps best practice?
+
+Because they make software delivery safer, faster, and easier to manage.
+For example, each deployment contains fewer changes, so automated tests can more easily identify problems.
+
 14- What are the main steps for responding to a failed deployment?
+
+Detect → Assess → Stop → Roll back → Investigate → Fix → Test → Redeploy
+
 15- How can Git, Jenkins, Docker, Kubernetes, Terraform, Ansible, Prometheus, and Grafana work together?
+
+1. Git (and Github) - Manages Codes and Documents with Branching, Merging, Push/Pull, Repository...
+2. Jenkins - Automates activities such as building, testing, and deploying software
+3. Docker and Kubernetes - Creates portable containers which contains products from previous steps and manage them
+4. Terraform - Defines and provisions infrastructure using configuration files
+5. Ansible - Automates server configuration, application deployment, and repetitive operational tasks
+6. Prometheus - Collects time-series metrics and supports monitoring and alerts of the final product
+7. Grafana - Displays metrics and other monitoring data through dashboards so that operations team can visually identify the issues more easily.
