@@ -4,10 +4,37 @@ Team: Exchange student
 2601760 Hein, Patrick
 
 1. What are the main responsibilities of the customer and the software engineer during requirements engineering? Discuss why both sides need to participate actively.
+Answer 1: The customer tries to formulate his understanding of the system, its unctions and behaviour into concrete detail. 
+The sofware engineer acts as interrogator,consultant,problem solver and negociator.
+They need to participate actively because of the communicationin the team.
+
 2. Why is communication difficult during requirements analysis? As a team, identify common causes of misunderstanding and suggest ways to reduce them.
+Answer2: Communication is difficult during requirements analysis because different people; customers, users,
+managers, developers, and analysts,often have different goals, knowledge, terminology, and expectations. A requirement that seems obvious to one person may be interpreted differently by another.
+Different expectations: Stakeholders may assume features or behaviors that were never discussed. So use document requirements in a consistent format.
+
 3. Requirements analysis focuses on what the system should do rather than how it should be implemented. Discuss why this separation is useful during early analysis.
+Answer 3: Separating what the system should do from how it should be implemented is useful during early requirements analysis because
+it keeps the team focused on the users’ actual needs rather than prematurely choosing a technical solution.
+- Focuses on user needs: The team first identifies the functions, goals, and problems the system must address without being distracted by programming languages, databases, or hardware.
+- Improves communication: Customers and users may not understand technical details. Discussing expected behavior in business or user terms makes requirements easier for everyone to understand.
+
 4. What information should an analyst collect during problem recognition? Create a list of questions that could help a team understand the customer's real problem.
+Answer 4: The goal is recognition of the basic problem elements as perceived by the customer and user.
+- What is happening right now?
+- What prompted the customer to raise this issue?
+- What specifically is not working as expected?
+- What does the customer believe the problem is?
+- If we solve the stated problem, will the customer's underlying need actually be met?
+- How do we know this is the most important problem to solve?
+
 5. Compare a simple question-and-answer interview with the FAST approach. Discuss the strengths of each approach and explain when a team might prefer a collaborative meeting.
+Answer 5: A simple question-and-answer interview is useful for collecting detailed information from individual customers or stakeholders.
+Its strength is that it is simple, flexible, and allows the analyst to ask specific follow-up questions.
+The FAST approach is more collaborative because several people work together to discuss requirements. 
+Its strength is that it encourages communication, helps resolve conflicts, and creates a shared understanding of the problem.
+
+A team may prefer a collaborative FAST meeting when the problem is complex or when different stakeholders have different needs and opinions.
 6. Design a FAST meeting for requirements gathering. Decide who should participate, what rules should be followed, how ideas should be recorded, and how the final consensus list should be created.
 7. What is the purpose of a mini-specification? Discuss what information should be included in a good mini-specification and how it can help later development activities.
 8. Compare the three QFD requirement types: normal, expected, and exciting. Create several examples for a software system and explain why each example belongs to its category.
