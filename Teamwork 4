@@ -29,6 +29,7 @@ Answer 4: The goal is recognition of the basic problem elements as perceived by 
 - How do we know this is the most important problem to solve?
 
 5. Compare a simple question-and-answer interview with the FAST approach. Discuss the strengths of each approach and explain when a team might prefer a collaborative meeting.
+
 Answer 5: A simple question-and-answer interview is useful for collecting detailed information from individual customers or stakeholders.
 Its strength is that it is simple, flexible, and allows the analyst to ask specific follow-up questions.
 The FAST approach is more collaborative because several people work together to discuss requirements. 
@@ -36,7 +37,28 @@ Its strength is that it encourages communication, helps resolve conflicts, and c
 
 A team may prefer a collaborative FAST meeting when the problem is complex or when different stakeholders have different needs and opinions.
 6. Design a FAST meeting for requirements gathering. Decide who should participate, what rules should be followed, how ideas should be recorded, and how the final consensus list should be created.
+Answer 6: The participants for a FAST meeting should be both software engineers and customers with a location at a neutral site. The rules for preparation and participation are established in advance.
+The agenda should be formal enough to cover important points but also informal enough to encourage the free flow of ideas. The meeting needs a facilitator, which can be a customer, a developer or an outsider who controls the meeting.
+It is important to record ideas with a definition mechanism such as worksheets, flip charts, wall stickers or an electronic bulletin board.
+The meeting proceeds towards the consensus list: Start with an agreement on product justification, each participant creates an individual list with no critique allowed at this stage, lists are combined per topic area, removing redundant entries and adding new ideas without deleting anything. The goal is to get a consensus list per topic area.
+
 7. What is the purpose of a mini-specification? Discuss what information should be included in a good mini-specification and how it can help later development activities.
+Answer 7: It's an elaboration of a word or a phrase contained on a consensus list, created by sub-teams. For example, the mini-specification for the RoomReservationSystem "room" object might be: smoking/non-smoking, three sizes, three possible statuses.
+It will be presented to all attendees afterward. Some additions can be made. In some cases, the development of mini-specs will uncover new objects, services, constraints or performance requirements that will be added to the original lists.
+The quality of a mini-spec depends on how well it supports later development activities.
+A good mini-specification covers all relevant attributes, is not ambiguous and can be easily tested later.
+
 8. Compare the three QFD requirement types: normal, expected, and exciting. Create several examples for a software system and explain why each example belongs to its category.
+Answer 8: Normal (must have): It is explicitly stated by the customer (requested displays, functions, performance levels). It satisfies the customer when present. Example: Login with e-mail and password.
+Expected (should have): Implicit. It's often unstated (ease of use, reliability, easy installation). Absence causes real dissatisfaction. Example: a smoothly running app
+Exciting (nice to have): Goes beyond the customer's expectations (good page-layout features in word processing software). Very satisfying when present. Example: Automatic fill for forms.
+
 9. How can prototyping help when customers and developers are not completely sure about the requirements? Discuss its possible benefits for communication, understanding, and requirements refinement.
+Answer 9: It's an alternative to standard analysis when detailed specification isn't possible yet. Two reasons are given: the customer may be unsure what is really needed, or the developer may be unsure whether a given approach will properly work.
+The prototype makes the requirements more visible to the customer and can make changes a lot more precise. Without a prototype problems only show up after development. That minimizes the risk of building the wrong software.
+
 10. How can FAST and QFD be used together during requirements engineering? Develop a team process that shows how customer needs could be collected, discussed, prioritized, and transformed into software requirements.
+Answer 10: FAST is helpful for a good collaboration framework (joint team, neutral-site meeting, facilitator, consensus lists, mini-specs, issues list, validation criteria).
+QFD is useful as an evaluation structure (Function/Information/Task Deployment, Value Analysis, feeding into a customer voice table).
+A possible combination is using FAST first to gather requirements, then QFD's logic to classify and prioritize them via value analysis.
+FAST fits to collected & discussed (meetings, individual lists) / prioritized fits to QFD (value analysis) / transformed into requirements is the result from mini-spec and the customer voice table
