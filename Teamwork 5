@@ -5,3 +5,14 @@ Team: Exchange student
 
 
 1: 
+Owner : beneficial, application works, security, accesability
+Receptionist: reservation, payment, identification,
+Service custom: room (empty or full)
+Users : make resevation, details of the room, security app, contact (service)
+
+
+2:
+The application needs to show every room with their details. Have the posibility to reserve the room and them pay for it. Service custom needs to know wich room to clean. 
+For the receptionist needs to know the identification and payment are correct. 
+
+
