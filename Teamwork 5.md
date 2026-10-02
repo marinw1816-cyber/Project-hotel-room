@@ -22,4 +22,4 @@ Payment service
 If the dates of reservations are not good, we need to block that access.
 
 
-![Alt text](<Hotel Room Reservation Software.jpg>)
+![Alt text](<Images/Hotel Room Reservation Software.jpg>)
