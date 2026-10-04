@@ -22,11 +22,47 @@ Payment service
 If the dates of reservations are not good, we need to block that access.
 
 3:
-S1: Account and authentication: input : email, password, name ; sign in,sign up ,security
-output: account create, error (password incorect) 
+S1: Account and authentication
+input : email, password, name
+sign in, sign up, security
+output: account create, error (password incorect, etc...) 
 
-S2: Room catalogue: no input ; output: rooms and details 
+S2: Room catalogue
+input: none
 
-S3: Room filters : input: details of the reservation (nbr of people, dates...);
-output: lists of rooms with this conditions 
+output: rooms and details
+
+S3: Room filters
+input: Details of the reservation (nbr of people, dates...)
+Filters the rooms depends on the condition
+output: Lists of rooms with this conditions
+
+S4: Reservation management
+input: information about the reservation
+Create, modify, delete, view the reservation
+output: processed revervation
+
+S5: Payment
+input: Card/Paypal..etc information
+Proceed the payment, check the authentication of the payment
+output: Payments status
+
+S6: Administration (Back-office)
+input: none
+Show the admin-only page for the admins. In admin-only page, they can verify info and edit details on website.
+output: none
+
+S7: Housekeeping Service
+input: none
+Tell cleaners which room to clean. Update room status after cleaning.
+output: cleaning Lists
+
+S8: Monitoring and Notification
+input: none
+Auto monitoring, system failure detections.
+output: Notification for the admins or engineers
+
+4:
+
+5:
 ![Alt text](<Images/Hotel Room Reservation Software.jpg>)
