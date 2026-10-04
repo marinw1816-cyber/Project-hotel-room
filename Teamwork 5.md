@@ -21,5 +21,12 @@ Employes should modify and extend reservations and room details. Change website'
 Payment service
 If the dates of reservations are not good, we need to block that access.
 
+3:
+S1: Account and authentication: input : email, password, name ; sign in,sign up ,security
+output: account create, error (password incorect) 
 
+S2: Room catalogue: no input ; output: rooms and details 
+
+S3: Room filters : input: details of the reservation (nbr of people, dates...);
+output: lists of rooms with this conditions 
 ![Alt text](<Images/Hotel Room Reservation Software.jpg>)
