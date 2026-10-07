@@ -1,8 +1,7 @@
 Team: Exchange student
-2601764 Seungheon Sa
-2601783 WASIER Marin
+2601764 Seungheon, Sa
+2601783 Wasier, Marin
 2601760 Hein, Patrick
-
 
 1: 
 Primary stakeholders (use the system directly):
@@ -18,20 +17,20 @@ Secondary stakholders (supports the system form outside):
 
 2:
 - The application needs to show every room with its detail (functional)
-- It must be possible to reserve a room and then pay for it (functional
+- It must be possible to reserve a room and then pay for it (functional)
 - There is a sign in / sign up function (functional)
 - Housekeeping staff need to know which room to clean (functional)
 - The receptionist needs to know that the identification and the payment are correct. (functional)
 - There are different pages for different levels of admin (functional)
-- The website needs to be quick (a room search shows its result in max. 2 seconds) and it updates for other users when a room is booked or not (within 5 seconds) (functional)
-- The website needs to be reliable (available 99 % of the time). In case of a failure we show our service contact, and an automatic monitoring service notifies the staff (functional)
+- The website needs to be quick (a room search shows its result in max. 2 seconds) and it updates for other users when a room is booked or not (within 5 seconds) (Performance)
+- The website needs to be reliable (available 99 % of the time). In case of a failure we show our service contact, and an automatic monitoring service notifies the staff (Reliability)
 - The ID and the password of the users and the payment details need to be secured (security)
-- Normal users can't change a reservation (security)
-- Employees can modify and extend reservations and room details, and they can change the website's information (functional & Maintainability)
+- Normal users can't modify or extend a reservation, they can only cancel their own (security)
+- the receptionist can modify and extend reservations. Admins can edit room details and the website's information. (functional & Maintainability)
 - The application uses an external payment service (Compatibility)
 - If the dates of a reservation are not valid, we block the booking (functional)
 
-Additional requirements (so that all categories of the task are covered):
+Additional requirements:
 - Functional: guests filter rooms by dates and number of people; users reset a forgotten password; guests view and cancel their own reservations; confirmation email after a booking; owner sees occupancy and revenue reports; optional reminder email before arrival
 - Performance: 100 users at the same time without slowdown; reports within 5 seconds
 - Usability: booking in max. 5 steps; works on phone, tablet and desktop; accessible, with readable contrast and keyboard use; clear error messages, e.g. "password incorrect"
@@ -97,37 +96,37 @@ Purpose: watch the system automatically
 Input: system health data (automatic)
 Output: notification for the admins or engineers
 Functional: auto monitoring, system failure detection
-Non-functional: availability of 99 %, service contact is shown when a failure happens, interface to the monitoring servic
+Non-functional: availability of 99 %, service contact is shown when a failure happens, interface to the monitoring service
 
 Interaction of the subsystems:
 - S1 checks who the user is and applies the role before S4, S6, S7 allow actions
 - S3 takes the rooms from S2 and the availability from S4
-- S4 asks S5 for the payment status and gives a confirmation/cancellation for the reservation
+- S4 asks S5 for the payment status and confirms the reservation or releases if if payment fails
 - S5 sends the payment request to the external payment provider
 - S6 maintains the room data that S2 shows and is building the reports form S4 and S5 data
 - S7 sets the room status that S3 uses for the availability
-- watches all subsystems and notifies the staff (admins/engineers)
+- S8 watches all subsystems and notifies the staff (admins/engineers)
 
 
-4: QFD
+4: 
 For the apporach we need firstly to collect the needs of the stakeholders and sort them into Normal, Expected and Exciting. We need to rate how important is each need to the customer (scale from 1 to 10 is helpful). After this we are going to transalte each need into a measurable technical requirement and rank the needs by importance
 
-Customer voice table & technical requirements: customer need / stakeholder / type / importance (1 to 10)
-1. reserve a room and pay online / guest / normal / 10
-2. no double bookings / guest, owner / expected / 10
-3. personal and payment data are safe / guest, owner / expected / 9
-4. see quickly which rooms are free / guest, receptionist / normal / 9
-5. website works reliably / owner / expected / 8
-6. cleaning rooms / Housekeeping staff / normal / 7
-7. check identification and payment correctly / receptionist / normal / 7
-8. see occupancy and revenue / owner / normal / 6
-9. edit room and website information / Admin / normal / 6
-10. easy use on phone / guest / expected / 5
-11. clear error message / guest / expected / 5
-12. reminder before arrival / guest / exciting / 3
+Customer voice table & technical requirements: customer need / stakeholder / type / importance (1 to 10) / measurable technical requirements
+1. reserve a room and pay online / guest / normal / 10 / from search to confirmation in max 5 steps
+2. no double bookings / guest, owner / expected / 10 / zero conflicting reservations, availability checked at booking time
+3. personal and payment data are safe / guest, owner / expected / 9 / hashed passwords, encrypted transfer, no stored card data
+4. see quickly which rooms are free / guest, receptionist / normal / 9 / search result in max. 2s, status change visible within 5s
+5. website works reliably / owner / expected / 8 / availability 99%, automatically notification on failure
+6. know which room to clean / Housekeeping staff / normal / 7 / cleaning list generated automatically from room status
+7. check identification and payment correctly / receptionist / normal / 7 / ID check and payment status shown for each reservation
+8. see occupancy and revenue / owner / normal / 6 / report generated within 5s
+9. edit room and website information / Admin / normal / 6 / admin pages per access level, edits without changes at code
+10. easy use on phone / guest / expected / 5 / layout adapts to the phone and other devices
+11. clear error message / guest / expected / 5 / specific message for each error case
+12. reminder before arrival / guest / exciting / 3 / reminder email one day before arrival
 
-The priority for steps 1 to 4 is "high". They need to be built first.
-Steps 5 to 10 have a "medium" priority while 11 and 12 are "low" priority and are built last or optional
+The priority for needs 1 to 4 is "high". They need to be built first.
+Needs 5 to 9 have a "medium" priority while 10, 11 and 12 are "low" priority and are built last or optional
 
 5:
 ![Alt text](<Images/Hotel Room Reservation Software.jpg>)
