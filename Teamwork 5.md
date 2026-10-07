@@ -129,4 +129,5 @@ The priority for needs 1 to 4 is "high". They need to be built first.
 Needs 5 to 9 have a "medium" priority while 10, 11 and 12 are "low" priority and are built last or optional
 
 5:
-![Alt text](<Images/Hotel Room Reservation Software.jpg>)
+![Alt text](Images/Sequence_Diagram.png)
+![Alt text](Images/Use_Case_Diagram.png)
