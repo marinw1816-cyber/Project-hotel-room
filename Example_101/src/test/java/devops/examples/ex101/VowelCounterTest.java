@@ -39,4 +39,7 @@ class VowelCounterTest {
     void nullInputIsRejected() {
         assertThrows(IllegalArgumentException.class, () -> VowelCounter.countVowels(null));
     }
-}
+    @Test
+    void countsVowelsInWonderful() {
+        assertEquals(3, VowelCounter.countVowels("Wonderful"));
+    }}
