@@ -44,7 +44,7 @@ Team: Exchange student
 Role: repository, CI/CD and integration.
 
 - Built the project `hotel-app` (Maven, Java 21) with `Room`, `ReservationStatus`, `Reservation` and `ReservationStore` and 11 unit tests (PR #29). All tests are green in Eclipse (JUnit 6).
-  [Screenshot: Images/eclipse_tests.png]
+  <img width="1568" height="628" alt="image" src="https://github.com/user-attachments/assets/e9a8a3ac-cc02-4ead-8fa0-33f642173b5b" />
 - Pipeline: `.github/workflows/hotel-app-ci.yml` runs `mvn -B test` with Java 21 on every push and on every pull request to main. The workflow of the course stays unchanged.
   [Screenshot: Images/actions_overview.png]
 - Red and green run: I broke a test on purpose on the branch `demo-red-ci`. Run #6 failed, after the revert run #7 was green. This shows that the pipeline stops a broken test before it reaches main. <img width="2638" height="664" alt="image" src="https://github.com/user-attachments/assets/b3c1f38d-af02-40bc-9623-7bd5bab6899b" />
