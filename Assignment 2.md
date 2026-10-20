@@ -21,7 +21,7 @@ Team: Exchange student
 - Repo: marinw1816-cyber/Project-hotel-room
 - Folder `hotel-app` (Maven project). `Example_101` and the workflow of the course stay untouched.
 - Own workflow: `.github/workflows/hotel-app-ci.yml` (runs `mvn -B test` on every push and on pull requests to main)
-- Rules: own branch from main, never push to main directly, a pull request needs a green check and a review before the merge
+- Rules: Code changes always go through a branch and a pull request. Small edits to this report file were committed directly to main.
 - Review rotation: TODO (fill in what really happened)
 
 ## 4. Progress in screenshots
