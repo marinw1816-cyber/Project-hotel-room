@@ -47,8 +47,8 @@ Role: repository, CI/CD and integration.
   [Screenshot: Images/eclipse_tests.png]
 - Pipeline: `.github/workflows/hotel-app-ci.yml` runs `mvn -B test` with Java 21 on every push and on every pull request to main. The workflow of the course stays unchanged.
   [Screenshot: Images/actions_overview.png]
-- Red and green run: I broke a test on purpose on the branch `demo-red-ci`. Run #6 failed, after the revert run #7 was green. This shows that the pipeline stops a broken test before it reaches main.
-  [Screenshot: Images/run_6_red.png] [Screenshot: Images/run_7_green.png]
+- Red and green run: I broke a test on purpose on the branch `demo-red-ci`. Run #6 failed, after the revert run #7 was green. This shows that the pipeline stops a broken test before it reaches main. <img width="2638" height="664" alt="image" src="https://github.com/user-attachments/assets/b3c1f38d-af02-40bc-9623-7bd5bab6899b" />
+
 - Feature room search: `RoomSearchService` returns the rooms with enough capacity that are free in the period. Cancelled reservations do not block a room. 5 new tests, 16 in total, all green (PR #30).
   [Screenshot: Images/pr_30.png]
 - Own branch for every change, no push to main. PR #28 restored main after it was reset (section 5). PR #29 (skeleton) and #31 (report file) were merged without review, code changes get a review.
