@@ -25,12 +25,21 @@ Team: Exchange student
 - Review rotation: TODO (fill in what really happened)
 
 ## 4. Progress in screenshots
+Eclipse: all 11 tests of the skeleton are green (JUnit 6).
+
+![Eclipse JUnit view: 11 of 11 tests green](Images/eclipse_tests.png)
+
+GitHub Actions: runs of the workflows on our branches.
+
+![GitHub Actions overview with all workflow runs](Images/actions_overview.png)
+
+Red and green run on the branch `demo-red-ci`: run #6 failed because of a broken test, run #7 after the revert was green.
+
+![Run 6 red and run 7 green](Images/red_green_run.png)
+
 - TODO: branch list
 - TODO: commit graph with three authors
 - TODO: pull request with review comment
-- TODO: green pipeline
-- TODO: red run #6, then green run #7
-- TODO: Eclipse test run (full window)
 
 ## 5. What we learned and what went wrong
 - GitHub main was reset to an older commit and lost the merge of PR #25. We restored it with a pull request (PR #28) instead of a force push.
@@ -43,14 +52,12 @@ Team: Exchange student
 
 Role: repository, CI/CD and integration.
 
-- Built the project `hotel-app` (Maven, Java 21) with `Room`, `ReservationStatus`, `Reservation` and `ReservationStore` and 11 unit tests (PR #29). All tests are green in Eclipse (JUnit 6).
-  <img width="1568" height="628" alt="image" src="https://github.com/user-attachments/assets/e9a8a3ac-cc02-4ead-8fa0-33f642173b5b" />
+- Built the project `hotel-app` (Maven, Java 21) with `Room`, `ReservationStatus`, `Reservation` and `ReservationStore` and 11 unit tests (PR #29). All tests are green in Eclipse (JUnit 6), see section 4.
 - Pipeline: `.github/workflows/hotel-app-ci.yml` runs `mvn -B test` with Java 21 on every push and on every pull request to main. The workflow of the course stays unchanged.
-  <img width="1232" height="965" alt="image" src="https://github.com/user-attachments/assets/26352aa2-57fb-4ecd-81e4-3c4365fd7fd6" />
-- Red and green run: I broke a test on purpose on the branch `demo-red-ci`. Run #6 failed, after the revert run #7 was green. This shows that the pipeline stops a broken test before it reaches main. <img width="2638" height="664" alt="image" src="https://github.com/user-attachments/assets/b3c1f38d-af02-40bc-9623-7bd5bab6899b" />
+- Red and green run: I broke a test on purpose on the branch `demo-red-ci`. Run #6 failed, after the revert run #7 was green. This shows that the pipeline reports a broken test before the code reaches main.
 - Feature room search: `RoomSearchService` returns the rooms with enough capacity that are free in the period. Cancelled reservations do not block a room. 5 new tests, 16 in total, all green (PR #30).
-  [Screenshot: Images/pr_30.png]
-- Own branch for every change, no push to main. PR #28 restored main after it was reset (section 5). PR #29 (skeleton) and #31 (report file) were merged without review, code changes get a review.
+  TODO: screenshot of PR #30 with the review
+- Code changes go through an own branch and a pull request. PR #28 restored main after it was reset (section 5). PR #29 (skeleton) and #31 (report file) were merged without review, and small edits to this report were committed directly to main. Code changes get a review.
 - I used Claude Code for writing code. It never commits, pushes or merges, I run the tests and do the Git steps myself.
 - Still to do: BookingService (`hotel.booking`) after the features of Marin and Seungheon are merged.
 
