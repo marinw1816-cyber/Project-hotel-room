@@ -1,1 +1,1 @@
-DO NOT MAKE CHANGES IN GITHUB!!!! ONLY IN GITLAB!!!!!!
+Devops Course
