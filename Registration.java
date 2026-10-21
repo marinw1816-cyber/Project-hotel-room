@@ -19,7 +19,7 @@ class Main {
         id = myObj.nextLine();
 
         System.out.println("Enter password");
-		pw = myObj.nextLine();
+		pw = myObj.nextLine(); //There should be some regulations about id and pw
 
 		System.out.println("Enter password again");
 		String temp = myObj.nextLine();
