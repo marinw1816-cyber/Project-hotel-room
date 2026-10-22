@@ -22,7 +22,9 @@ Team: Exchange student
 - Folder `hotel-app` (Maven project). `Example_101` and the workflow of the course stay untouched.
 - Own workflow: `.github/workflows/hotel-app-ci.yml` (runs `mvn -B test` on every push and on pull requests to main)
 - Rules: Code changes always go through a branch and a pull request. Small edits to this report file were committed directly to main.
-- Review rotation: TODO (fill in what really happened)
+- Review rotation (plan): Patrick reviews Marin, Marin reviews Seungheon, Seungheon reviews Patrick.
+- In practice so far: Patrick reviewed Marin's PR #33 before it was merged. PR #30 (room search) was merged without a review, although one was requested.
+- TODO: review of PR #35 (BookingService)
 
 ## 4. Progress in screenshots
 Eclipse: all 11 tests of the skeleton are green (JUnit 6).
@@ -39,11 +41,18 @@ Red and green run on the branch `demo-red-ci`: run #6 failed because of a broken
 
 - TODO: branch list
 - TODO: commit graph with three authors
-- TODO: pull request with review comment
+
+Pull request #33 (Marin's reservation feature) with my review comment and the merge. GitHub listed 16 commits on this PR because main had been reset when it was opened. The PR itself adds one commit (`bf180fa`) with two files.
+
+![PR #33 with my review comment and the merge](Images/pr33_review.png)
+
 
 ## 5. What we learned and what went wrong
 - GitHub main was reset to an older commit and lost the merge of PR #25. We restored it with a pull request (PR #28) instead of a force push.
 - Our local clone has GitLab as origin, so a plain `git pull` fetched the wrong state. We now use `git pull github main`.
+- main was reset a second time on 21 October by a force push. PR #30 brought most of the state back, PR #34 restored the report and the images. Again we did not force push ourselves.
+- PR #30 was merged without the requested review. A review request does not block a merge, only a branch rule with required reviews would. main is not protected on GitHub.
+- Several branches were deleted on 21 October, among them `demo-red-ci`. The red and green runs (#6 and #7) are still in the Actions history.
 - TODO: add after the BookingService and the reviews
 
 ---
@@ -56,10 +65,10 @@ Role: repository, CI/CD and integration.
 - Pipeline: `.github/workflows/hotel-app-ci.yml` runs `mvn -B test` with Java 21 on every push and on every pull request to main. The workflow of the course stays unchanged.
 - Red and green run: I broke a test on purpose on the branch `demo-red-ci`. Run #6 failed, after the revert run #7 was green. This shows that the pipeline reports a broken test before the code reaches main.
 - Feature room search: `RoomSearchService` returns the rooms with enough capacity that are free in the period. Cancelled reservations do not block a room. 5 new tests, 16 in total, all green (PR #30).
-  TODO: screenshot of PR #30 with the review
-- Code changes go through an own branch and a pull request. PR #28 restored main after it was reset (section 5). PR #29 (skeleton) and #31 (report file) were merged without review, and small edits to this report were committed directly to main. Code changes get a review.
+  PR #30 was merged without the requested review, so there is no review screenshot for it. My review of Marin's PR #33 is shown in section 4.
+- Code changes go through an own branch and a pull request. The PRs #28 and #34 (restore of main after the resets, section 5), #29 (skeleton), #31 and #32 (report file and images) were all merged without review, and small edits to this report were committed directly to main. Code changes get a review.
 - I used Claude Code for writing code. It never commits, pushes or merges, I run the tests and do the Git steps myself.
-- Still to do: BookingService (`hotel.booking`) after the features of Marin and Seungheon are merged.
+- BookingService (`hotel.booking`): PR #35 is open and waits for the review. TODO: add the result after the merge.
 
 ## Own part: Marin
 TODO
