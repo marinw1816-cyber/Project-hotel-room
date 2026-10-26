@@ -73,7 +73,16 @@ Role: repository, CI/CD and integration.
 - After the merge I added a review on PR #38 (user accounts) with two small findings: `PasswordHasher.matches()` throws an exception on invalid Base64 instead of returning false, and user names are case sensitive.
 
 ## Own part: Marin
-TODO
+
+Role: reservation feature (package `hotel.reservation`).
+
+- Built `ReservationService` on top of Patrick's model (`Reservation`, `ReservationStatus`, `ReservationStore`). The store is passed through the constructor, and a missing store is rejected immediately with an `IllegalArgumentException`.
+- `confirm()`: changes a reservation from PENDING to CONFIRMED. Any other status (CONFIRMED or CANCELLED) throws an `IllegalStateException`.
+- `changeDates()`: checks that the new dates do not overlap another active reservation of the same room. The reservation itself, cancelled reservations and other rooms are ignored. The new dates are validated first, so invalid dates or a conflict leave the old reservation unchanged. Because the dates in `Reservation` are final, the old reservation is cancelled and a new one with the new dates and the same status is added and returned.
+- `totalPrice()`: number of nights × price per night, as `BigDecimal`.
+- 7 unit tests in `ReservationServiceTest` (confirm, confirm rejected for non-pending, change accepted and status kept, overlap rejected, cancelled and other rooms ignored, invalid dates rejected without cancelling, total price).
+- Workflow: own branch `feature/reservation` and pull request #33 (one commit, `bf180fa`, two files). The pipeline `hotel-app CI` was green on the push (run #19) and on the pull request (run #20). Patrick reviewed the PR and merged it after main was restored (section 4).
+- Review feedback: Patrick asked for a short PR description, which I added. He also pointed out that after a date change the old reservation stays in the store as CANCELLED. We keep it like this for now. A later version could update the dates in place instead.
 
 ## Own part: Seungheon
 TODO
