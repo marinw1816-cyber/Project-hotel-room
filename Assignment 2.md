@@ -39,7 +39,9 @@ Red and green run on the branch `demo-red-ci`: run #6 failed because of a broken
 
 ![Run 6 red and run 7 green](Images/red_green_run.png)
 
-- TODO: commit graph with three authors
+Commits per author on main (GitHub Insights, Contributors, merge commits excluded, status 26 October 2026). All three of us have commits on main. The numbers count commits, not the amount of work.
+
+![Contributors: commits per week to main, by author](Images/commit_graph.png)
 
 Pull request #33 (Marin's reservation feature) with my review comment and the merge. GitHub listed 16 commits on this PR because main had been reset when it was opened. The PR itself adds one commit (`bf180fa`) with two files.
 
