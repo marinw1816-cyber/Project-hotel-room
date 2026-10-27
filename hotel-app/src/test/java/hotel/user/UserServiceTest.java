@@ -48,6 +48,21 @@ class UserServiceTest {
     }
 
     @Test
+    void usernameIsNotCaseSensitive() {
+        UserService service = new UserService();
+        service.register("Anna", "secret123", Role.CUSTOMER);
+
+        // reported in the review of PR #38: register "Anna", log in as "anna"
+        assertTrue(service.login("anna", "secret123").isPresent());
+        assertTrue(service.login("ANNA", "secret123").isPresent());
+        assertTrue(service.login(" Anna ", "secret123").isPresent());
+        assertEquals("anna", service.login("ANNA", "secret123").get().getUsername());
+        // the same name in another spelling is a duplicate
+        assertThrows(IllegalStateException.class,
+                () -> service.register("ANNA", "other-pass1", Role.ADMIN));
+    }
+
+    @Test
     void rejectsInvalidInput() {
         UserService service = new UserService();
 

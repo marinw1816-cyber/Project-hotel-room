@@ -31,6 +31,16 @@ class PasswordHasherTest {
     }
 
     @Test
+    void damagedHashNeverThrowsAndNeverMatches() {
+        // one ":" but no valid Base64 (reported in the review of PR #38)
+        assertFalse(PasswordHasher.matches("secret123", "!!:!!"));
+        // empty salt
+        assertFalse(PasswordHasher.matches("secret123", ":AAAA"));
+        // empty parts
+        assertFalse(PasswordHasher.matches("secret123", ":"));
+    }
+
+    @Test
     void rejectsEmptyPassword() {
         assertThrows(IllegalArgumentException.class, () -> PasswordHasher.hash(""));
         assertThrows(IllegalArgumentException.class, () -> PasswordHasher.hash(null));

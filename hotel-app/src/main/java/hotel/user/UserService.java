@@ -1,6 +1,7 @@
 package hotel.user;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class UserService {
         if (role == null) {
             throw new IllegalArgumentException("Role is missing");
         }
-        String name = username.trim();
+        String name = normalize(username);
         if (users.containsKey(name)) {
             throw new IllegalStateException("Username is already taken");
         }
@@ -36,10 +37,15 @@ public class UserService {
         if (username == null || password == null) {
             return Optional.empty();
         }
-        User user = users.get(username.trim());
+        User user = users.get(normalize(username));
         if (user == null || !PasswordHasher.matches(password, user.getPasswordHash())) {
             return Optional.empty();
         }
         return Optional.of(user);
+    }
+
+    /** Usernames are not case sensitive: "Anna", " anna" and "ANNA" are the same user. */
+    private static String normalize(String username) {
+        return username.trim().toLowerCase(Locale.ROOT);
     }
 }
