@@ -43,11 +43,16 @@ public final class PasswordHasher {
         if (parts.length != 2) {
             return false;
         }
-        byte[] salt = Base64.getDecoder().decode(parts[0]);
-        byte[] expected = Base64.getDecoder().decode(parts[1]);
-        byte[] actual = derive(password, salt);
-        // Compares all bytes, takes the same time for right and wrong passwords
-        return MessageDigest.isEqual(expected, actual);
+        try {
+            byte[] salt = Base64.getDecoder().decode(parts[0]);
+            byte[] expected = Base64.getDecoder().decode(parts[1]);
+            byte[] actual = derive(password, salt);
+            // Compares all bytes, takes the same time for right and wrong passwords
+            return MessageDigest.isEqual(expected, actual);
+        } catch (IllegalArgumentException e) {
+            // Stored value is damaged (no valid Base64, empty salt): never a match
+            return false;
+        }
     }
 
     private static byte[] derive(String password, byte[] salt) {
