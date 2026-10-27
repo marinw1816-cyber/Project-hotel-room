@@ -87,4 +87,17 @@ Role: reservation feature (package `hotel.reservation`).
 - Review feedback: Patrick asked for a short PR description, which I added. He also pointed out that after a date change the old reservation stays in the store as CANCELLED. We keep it like this for now. A later version could update the dates in place instead.
 
 ## Own part: Seungheon
-TODO
+
+Role: user accounts (package `hotel.user`).
+
+- Built sign-up and sign-in with three roles. `Role` is an enum with ADMIN, CUSTOMER and RECEPTIONIST. `User` holds the username, the password hash and the role and cannot be changed after it is created.
+- `PasswordHasher`: hashes a password with PBKDF2 (HmacSHA256, 120,000 iterations) and a random 16-byte salt for every password. The result is stored as `salt:hash`, so the same password gives a different hash each time. `matches()` calculates the hash again with the stored salt and compares in constant time. The plain password is never stored. Only JDK classes are used, so `pom.xml` did not change.
+- `UserService`: `register()` rejects empty usernames, passwords shorter than 8 characters, a missing role and duplicate usernames. `login()` returns the user, or an empty Optional for an unknown user or a wrong password, so it does not tell which of the two was wrong. For now the role is chosen freely at sign-up and users are kept in memory. Later the database will store them and sign-up will create only CUSTOMER accounts.
+- 10 unit tests: 6 in `UserServiceTest` and 4 in `PasswordHasherTest`. All tests are green in Eclipse (JUnit 6).
+- Workflow: branch `feature-user` and pull request #38. The pipeline `hotel-app CI` was green. The PR was merged about one minute after it was opened, before the requested review (section 3).
+- Problems found: after the merge Patrick reviewed PR #38 and found two real problems. (1) `matches()` threw an `IllegalArgumentException` for a damaged hash such as `!!:!!` instead of returning false. (2) Usernames were case sensitive, so after signing up as "Anna" the login with "anna" failed. I reproduced both. A third case, an empty salt (`:AAAA`), had the same problem, and I fixed it too.
+- Fix: branch `fix-feature-user` and pull request #40. `matches()` now returns false for a damaged hash. Usernames are trimmed and stored in lower case, so "Anna", "anna" and " ANNA " are the same user. One new test for each problem (`damagedHashNeverThrowsAndNeverMatches` and `usernameIsNotCaseSensitive`). Both tests fail on the old code and pass with the fix.
+- Review: this time the review rotation worked. Marin tested both fixes on the branch and approved the PR in her review comment. The pipeline was green, and I merged only after her review.
+- Result: 42 of 42 tests are green in Eclipse and in GitHub Actions on main.
+
+![Eclipse JUnit view: 42 of 42 tests green after the fix](Images/hotel_user_test.png)
