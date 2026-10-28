@@ -11,26 +11,26 @@ public class ReservationService {
 
     public ReservationService(ReservationStore store) {
         if (store == null) {
-            throw new IllegalArgumentException("Store fehlt");
+            throw new IllegalArgumentException("Store is required");
         }
         this.store = store;
     }
 
     public void confirm(Reservation reservation) {
         if (reservation.getStatus() != ReservationStatus.PENDING) {
-            throw new IllegalStateException("Nur offene Reservierungen können bestätigt werden");
+            throw new IllegalStateException("Only open reservations can be confirmed");
         }
         reservation.setStatus(ReservationStatus.CONFIRMED);
     }
 
     public Reservation changeDates(Reservation old, LocalDate in, LocalDate out) {
         if (!store.findAll().contains(old)) {
-            throw new IllegalArgumentException("Reservierung nicht im Store");
+            throw new IllegalArgumentException("Reservation is not in the store");
         }
         if (old.getStatus() == ReservationStatus.CANCELLED) {
-            throw new IllegalStateException("Stornierte Reservierung kann nicht geändert werden");
+            throw new IllegalStateException("A cancelled reservation cannot be changed");
         }
-        // Konstruktor prüft die neuen Daten, bevor etwas geändert wird
+        // The constructor validates the new data before anything is changed
         Reservation updated = new Reservation(old.getRoom(), old.getGuest(), in, out);
         boolean conflict = store.findAll().stream()
                 .filter(r -> r != old)
@@ -38,7 +38,7 @@ public class ReservationService {
                 .filter(r -> r.getRoom().getNumber() == old.getRoom().getNumber())
                 .anyMatch(r -> r.overlaps(in, out));
         if (conflict) {
-            throw new IllegalStateException("Zimmer im Zeitraum nicht verfügbar");
+            throw new IllegalStateException("Room is not available in this period");
         }
         ReservationStatus status = old.getStatus();
         store.cancel(old);
