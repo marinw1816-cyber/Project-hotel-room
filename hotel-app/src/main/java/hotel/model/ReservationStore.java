@@ -9,7 +9,7 @@ public class ReservationStore {
 
     public void add(Reservation reservation) {
         if (!isAvailable(reservation.getRoom(), reservation.getCheckIn(), reservation.getCheckOut())) {
-            throw new IllegalStateException("Zimmer im Zeitraum nicht verfügbar");
+            throw new IllegalStateException("Room is not available in this period");
         }
         reservations.add(reservation);
     }

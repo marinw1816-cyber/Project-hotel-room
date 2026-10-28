@@ -12,16 +12,16 @@ public class Reservation {
 
     public Reservation(Room room, String guest, LocalDate checkIn, LocalDate checkOut) {
         if (room == null) {
-            throw new IllegalArgumentException("Zimmer fehlt");
+            throw new IllegalArgumentException("Room is required");
         }
         if (guest == null || guest.isBlank()) {
-            throw new IllegalArgumentException("Gast fehlt");
+            throw new IllegalArgumentException("Guest is required");
         }
         if (checkIn == null || checkOut == null) {
-            throw new IllegalArgumentException("Datum fehlt");
+            throw new IllegalArgumentException("Date is required");
         }
         if (!checkOut.isAfter(checkIn)) {
-            throw new IllegalArgumentException("Check-out muss nach Check-in liegen");
+            throw new IllegalArgumentException("Check-out must be after check-in");
         }
         this.room = room;
         this.guest = guest;

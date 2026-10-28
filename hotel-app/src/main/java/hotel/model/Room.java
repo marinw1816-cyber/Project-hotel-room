@@ -9,13 +9,13 @@ public class Room {
 
     public Room(int number, int capacity, BigDecimal pricePerNight) {
         if (number <= 0) {
-            throw new IllegalArgumentException("Zimmernummer muss positiv sein");
+            throw new IllegalArgumentException("Room number must be positive");
         }
         if (capacity <= 0) {
-            throw new IllegalArgumentException("Kapazität muss positiv sein");
+            throw new IllegalArgumentException("Capacity must be positive");
         }
         if (pricePerNight == null || pricePerNight.signum() < 0) {
-            throw new IllegalArgumentException("Preis darf nicht negativ sein");
+            throw new IllegalArgumentException("Price must not be negative");
         }
         this.number = number;
         this.capacity = capacity;

@@ -12,7 +12,7 @@ public class RoomSearchService {
 
     public RoomSearchService(List<Room> rooms, ReservationStore store) {
         if (rooms == null || store == null) {
-            throw new IllegalArgumentException("Zimmer und Store dürfen nicht null sein");
+            throw new IllegalArgumentException("Rooms and store must not be null");
         }
         this.rooms = List.copyOf(rooms);
         this.store = store;
@@ -20,13 +20,13 @@ public class RoomSearchService {
 
     public List<Room> findAvailableRooms(LocalDate checkIn, LocalDate checkOut, int guests) {
         if (checkIn == null || checkOut == null) {
-            throw new IllegalArgumentException("Datum fehlt");
+            throw new IllegalArgumentException("Date is required");
         }
         if (!checkOut.isAfter(checkIn)) {
-            throw new IllegalArgumentException("Check-out muss nach Check-in liegen");
+            throw new IllegalArgumentException("Check-out must be after check-in");
         }
         if (guests <= 0) {
-            throw new IllegalArgumentException("Personenzahl muss positiv sein");
+            throw new IllegalArgumentException("Number of guests must be positive");
         }
         return rooms.stream()
                 .filter(r -> r.getCapacity() >= guests)

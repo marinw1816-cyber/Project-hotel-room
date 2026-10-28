@@ -17,7 +17,7 @@ public class BookingService {
     public BookingService(RoomSearchService searchService, ReservationStore store,
                           ReservationService reservationService) {
         if (searchService == null || store == null || reservationService == null) {
-            throw new IllegalArgumentException("Services und Store dürfen nicht null sein");
+            throw new IllegalArgumentException("Services and store must not be null");
         }
         this.searchService = searchService;
         this.store = store;
@@ -27,7 +27,7 @@ public class BookingService {
     public Reservation book(String guest, LocalDate checkIn, LocalDate checkOut, int guests) {
         Room cheapest = searchService.findAvailableRooms(checkIn, checkOut, guests).stream()
                 .min(Comparator.comparing(Room::getPricePerNight))
-                .orElseThrow(() -> new IllegalStateException("Kein passendes Zimmer frei"));
+                .orElseThrow(() -> new IllegalStateException("No suitable room available"));
         Reservation reservation = new Reservation(cheapest, guest, checkIn, checkOut);
         store.add(reservation);
         return reservation;

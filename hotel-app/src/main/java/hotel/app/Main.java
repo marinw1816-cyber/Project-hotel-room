@@ -29,21 +29,21 @@ public class Main {
         LocalDate checkOut = LocalDate.of(2026, 12, 4);
         int guests = 2;
 
-        System.out.println("Freie Zimmer vom " + checkIn + " bis " + checkOut + " für " + guests + " Personen:");
+        System.out.println("Free rooms from " + checkIn + " to " + checkOut + " for " + guests + " guests:");
         for (Room room : searchService.findAvailableRooms(checkIn, checkOut, guests)) {
-            System.out.println("  Zimmer " + room.getNumber() + " (" + room.getCapacity() + " Personen, "
-                    + room.getPricePerNight() + " EUR/Nacht)");
+            System.out.println("  Room " + room.getNumber() + " (" + room.getCapacity() + " guests, "
+                    + room.getPricePerNight() + " EUR/night)");
         }
 
         Reservation reservation = bookingService.book("Max Mustermann", checkIn, checkOut, guests);
         bookingService.confirm(reservation);
-        System.out.println("Buchung: " + reservation.getGuest() + ", Zimmer " + reservation.getRoom().getNumber()
-                + ", " + reservation.nights() + " Nächte, Status " + reservation.getStatus()
-                + ", Gesamtpreis " + bookingService.totalPrice(reservation) + " EUR");
+        System.out.println("Booking: " + reservation.getGuest() + ", room " + reservation.getRoom().getNumber()
+                + ", " + reservation.nights() + " nights, status " + reservation.getStatus()
+                + ", total price " + bookingService.totalPrice(reservation) + " EUR");
 
-        System.out.println("Freie Zimmer nach der Buchung:");
+        System.out.println("Free rooms after the booking:");
         for (Room room : searchService.findAvailableRooms(checkIn, checkOut, guests)) {
-            System.out.println("  Zimmer " + room.getNumber());
+            System.out.println("  Room " + room.getNumber());
         }
 
          ReservationDemo.run();
