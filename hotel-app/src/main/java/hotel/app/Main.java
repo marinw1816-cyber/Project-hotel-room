@@ -1,6 +1,7 @@
 package hotel.app;
 
 import hotel.booking.BookingService;
+import hotel.reservation.ReservationDemo;
 import hotel.model.Reservation;
 import hotel.model.ReservationStore;
 import hotel.model.Room;
@@ -45,7 +46,7 @@ public class Main {
             System.out.println("  Zimmer " + room.getNumber());
         }
 
-        // Marin: call ReservationDemo.run() here
+         ReservationDemo.run();
         // Sean: call UserDemo.run() here
     }
 }
