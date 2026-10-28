@@ -149,18 +149,18 @@
 
 | # | Customer need | Stakeholder | Type | Importance (1–10) | Measurable technical requirement | Priority |
 |---|---|---|---|---|---|---|
-| 1 | Reserve a room and pay online | Guest | Normal | 10 | From search to confirmation in max. 5 steps | High |
-| 2 | No double bookings | Guest, owner | Expected | 10 | Zero conflicting reservations, availability checked at booking time | High |
-| 3 | Personal and payment data are safe | Guest, owner | Expected | 9 | Hashed passwords, encrypted transfer, no stored card data | High |
-| 4 | See quickly which rooms are free | Guest, receptionist | Normal | 9 | Search result in max. 2 s, status change visible within 5 s | High |
-| 5 | Website works reliably | Owner | Expected | 8 | Availability 99 %, automatic notification on failure | Medium |
-| 6 | Know which room to clean | Housekeeping staff | Normal | 7 | Cleaning list generated automatically from room status | Medium |
-| 7 | Check identification and payment correctly | Receptionist | Normal | 7 | ID check and payment status shown for each reservation | Medium |
-| 8 | See occupancy and revenue | Owner | Normal | 6 | Report generated within 5 s | Medium |
-| 9 | Edit room and website information | Admin | Normal | 6 | Admin pages per access level, edits without code changes | Medium |
-| 10 | Easy use on phone | Guest | Expected | 5 | Layout adapts to phones and other devices | Low |
-| 11 | Clear error messages | Guest | Expected | 5 | Specific message for each error case | Low |
-| 12 | Reminder before arrival | Guest | Exciting | 3 | Reminder email one day before arrival | Low |
+| 1 | Reserve a room and pay online | Guest | Normal | 10 | From search to confirmation in max. 5 steps | Must |
+| 2 | No double bookings | Guest, owner | Expected | 10 | Zero conflicting reservations, availability checked at booking time | Must |
+| 3 | Personal and payment data are safe | Guest, owner | Expected | 9 | Hashed passwords, encrypted transfer, no stored card data | Must |
+| 4 | See quickly which rooms are free | Guest, receptionist | Normal | 9 | Search result in max. 2 s, status change visible within 5 s | Must |
+| 5 | Website works reliably | Owner | Expected | 8 | Availability 99 %, automatic notification on failure | Should |
+| 6 | Know which room to clean | Housekeeping staff | Normal | 7 | Cleaning list generated automatically from room status | Should |
+| 7 | Check identification and payment correctly | Receptionist | Normal | 7 | ID check and payment status shown for each reservation | Should |
+| 8 | See occupancy and revenue | Owner | Normal | 6 | Report generated within 5 s | Should |
+| 9 | Edit room and website information | Admin | Normal | 6 | Admin pages per access level, edits without code changes | Should |
+| 10 | Easy use on phone | Guest | Expected | 5 | Layout adapts to phones and other devices | Nice to have |
+| 11 | Clear error messages | Guest | Expected | 5 | Specific message for each error case | Nice to have |
+| 12 | Reminder before arrival | Guest | Exciting | 3 | Reminder email one day before arrival | Nice to have |
 
 High-priority needs (1 to 4) are built first. Medium-priority needs (5 to 9) come next, and low-priority needs (10 to 12) are built last or are optional.
 
