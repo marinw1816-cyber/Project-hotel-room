@@ -49,7 +49,7 @@ mvn -B test
 Without Java or Maven installed, the tests can also run in Docker (PowerShell):
 
 ```powershell
-docker run --rm -v "${PWD}\\hotel-app:/app" -w /app maven:3.9.6-eclipse-temurin-21 mvn -B test
+docker run --rm -v "${PWD}\hotel-app:/app" -w /app maven:3.9.6-eclipse-temurin-21 mvn -B test
 ```
 
 ## Run the application with Docker
@@ -59,16 +59,13 @@ The image is on Docker Hub: [`patrickhein1008/hotel-app`](https://hub.docker.com
 ```bash
 docker pull patrickhein1008/hotel-app:v2
 docker run --rm patrickhein1008/hotel-app:v2
-On a Mac with Apple Silicon (M1/M2/M3), `v2` does not run directly because it was built on an x86\_64 laptop and is only available for `linux/amd64`. Add `--platform linux/amd64` to both commands, Docker Desktop then runs it with emulation:
+```
 
-
+On a Mac with Apple Silicon (M1/M2/M3), `v2` does not run directly because it was built on an x86_64 laptop and is only available for `linux/amd64`. Add `--platform linux/amd64` to both commands, Docker Desktop then runs it with emulation:
 
 ```bash
-
 docker pull --platform linux/amd64 patrickhein1008/hotel-app:v2
-
 docker run --rm --platform linux/amd64 patrickhein1008/hotel-app:v2
-
 ```
 
 Build the image yourself from the source:
