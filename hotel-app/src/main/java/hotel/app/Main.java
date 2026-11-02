@@ -7,6 +7,7 @@ import hotel.model.ReservationStore;
 import hotel.model.Room;
 import hotel.reservation.ReservationService;
 import hotel.search.RoomSearchService;
+import hotel.user.UserDemo;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -47,6 +48,6 @@ public class Main {
         }
 
          ReservationDemo.run();
-        // Sean: call UserDemo.run() here
+        UserDemo.run();
     }
 }
