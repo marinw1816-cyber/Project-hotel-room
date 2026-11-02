@@ -10,7 +10,7 @@ public class UserDemo {
         User anna = service.register("Anna", "secret123", Role.CUSTOMER);
         service.register("Rita", "reception1", Role.RECEPTIONIST);
         System.out.println("Registered: " + anna.getUsername() + " (" + anna.getRole() + ")");
-        System.out.println("Password stored: "
+        System.out.println("Password stored only as a hash: "
                 + !anna.getPasswordHash().contains("secret123"));
 
         System.out.println("Login Anna with the right password: "
