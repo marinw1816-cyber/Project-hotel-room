@@ -5,12 +5,12 @@ Team: Exchange student
 
 # Assignment 3 (Docker): Report
 
-Status: plan. Sections 1 to 4 describe what we agreed to do. `[FILL IN]` is replaced with the real result after each step.
+Status: done. Sections 1 to 4 describe what we agreed to do. Section 5 and the own parts show what happened.
 
 ## 1. Application and image
 - Application: `hotel-app` (Java 21, Maven) from Assignment 2. New: a small console program `hotel.app.Main` that shows the existing features (room search, booking, reservation, user accounts). The app had no entry point before, so no image could run it.
 - Dockerfile: multi-stage build as in Example 8-4 (Maven image builds the JAR, Java 21 JRE image runs it). `src` and `pom.xml` are copied into the runtime image, so everybody can pull the image and take the source code out of it (`docker cp`) to develop further.
-- Docker Hub repository: `[FILL IN: username/image_name]`
+- Docker Hub repository: `patrickhein1008/hotel-app` (tags `v1`, `v2`, `v3`, `latest`)
 - Platform: GitHub, same repository as Assignment 2 (`marinw1816-cyber/Project-hotel-room`)
 
 ## 2. Who does what
@@ -18,10 +18,12 @@ Status: plan. Sections 1 to 4 describe what we agreed to do. `[FILL IN]` is repl
 |---|---|---|---|---|---|
 | 0 | Marin | Branch rule on main (review required, no force push), Docker Hub access for the team | none | none | none |
 | 0 | all | Docker installed, `docker run hello-world`, Docker Hub account | none | none | none |
-| 1 | Patrick | `Main`, `mainClass` in `pom.xml`, Dockerfile, `.dockerignore`, build, run, first push | `feature-docker` | Seungheon | `v1` |
+| 1 | Patrick | `Main`, `mainClass` in `pom.xml`, Dockerfile, `.dockerignore`, build, run, first push | `feature-docker` | Marin | `v1` |
 | 2 | Marin | Pull `v1`, run it, take the source out of the image, add the reservation demo, build, push | `feature-docker-reservation` | Patrick | `v2` |
 | 3 | Seungheon | Pull `v2`, run it, add the user demo, build, push | `feature-docker-user` | Marin | `v3` |
 | 4 | Patrick | Pull `v3`, check that all three parts run, tag `latest`, collect screenshots, write the report | `report-docker` | Marin | `latest` |
+
+Plan versus reality: PR #43 (step 1) was merged by Marin, not by Seungheon as planned. PR #44 (step 2) was merged by Patrick and PR #50 (step 3) by Marin, as planned.
 
 Order of the chain: each person starts only after the previous pull request is merged. The image is always built from the merged `main`, so the image and `main` show the same code.
 
@@ -58,20 +60,79 @@ Order of the chain: each person starts only after the previous pull request is m
 - The author does not merge his own pull request. The reviewer merges after the review.
 - Every change to `Main` is one line per person, to avoid merge conflicts. The demo code lives in the own package.
 - Tokens and passwords never go into the repository, the report or a chat.
-- If a step is not done by `[FILL IN: date agreed in the team]`, Patrick does it and the report says so.
+- If a step is not done by the requested date, Patrick does it and the report says so. Requested date for step 3: 31.10.2026 (evening, from Patrick's message of 28.10.2026). Step 3 was merged on 02.11.2026 (PR #50), so the fallback was not needed.
 
 ## 5. Evidence (screenshots, with caption)
 - Patrick: Dockerfile in the pull request, `docker build` and `docker run` output, Docker Hub tags page, final `docker pull` of `v3`.
 - Marin: `docker pull` of `v1`, source files taken out of the image, pull request with review, `docker push` of `v2`.
 - Seungheon: `docker pull` of `v2`, pull request with review, `docker push` of `v3`.
 
+Screenshots of Patrick (Marin's screenshots are in his own part):
+
+![Dockerfile on main: build stage with Maven and JDK 21, runtime stage with the Java 21 JRE](Images/dockerfile.png)
+
+![Pull request 43 (step 1) with review](Images/pr43_review.png)
+
+![v1: imagetools inspect (linux/amd64 and linux/arm64, plus attestation entries) and run, German output](Images/docker_v1_inspect_run.png)
+
+![v2 on Apple Silicon: inspect, pull and run with --platform linux/amd64](Images/docker_v2_pull_run_inspect.png)
+
+![v3: inspect, pull and run, the hotel demo, the reservation demo and the user demo appear](Images/docker_v3_pull_run_inspect.png)
+
+![latest and v3 have the same digest](Images/docker_latest_inspect.png)
+
+![Docker Hub tags: v1 by patrickhein1008, v2 by marin971, v3 by zakrikra, latest by patrickhein1008 (relative times as shown on 03.11.2026)](Images/docker_hub_tags.png)
+
 ---
 
 ## Own part: Patrick
-`[FILL IN]`
+Role: Docker image chain (steps 1 and 4), reviews, repository.
+
+- Step 1 (PR #43, branch `feature-docker`, merged on 28.10.2026): new `hotel.app.Main` (console demo: room list, search for free rooms from 2026-12-01 to 2026-12-04 for 2 guests, one booking), `mainClass` in the `maven-jar-plugin` of `hotel-app/pom.xml`, `Dockerfile` and `.dockerignore` in `hotel-app`.
+- Dockerfile: multi-stage. Stage 1 (`maven:3.9.6-eclipse-temurin-21`) builds the JAR with `mvn -B clean package -DskipTests`, the tests already run in CI. Stage 2 (`eclipse-temurin:21-jre`) runs it with `java -jar /app/hotel-app.jar`. `src` and `pom.xml` are copied into the runtime image, so the others can take the source out with `docker cp`.
+- `v1`: built with Docker Buildx for `linux/amd64` and `linux/arm64` and pushed to `patrickhein1008/hotel-app`. Its output is German, the texts in the code were translated later. `v2` and `v3` were built on Windows laptops and are `linux/amd64` only. On my Apple Silicon Mac they need `--platform linux/amd64`, otherwise `docker pull` fails with "no matching manifest for linux/arm64/v8".
+- Docker Hub: I created the repository. The tags page shows that Marin (`marin971`) pushed `v2` and Seungheon (`zakrikra`) pushed `v3`, so both have push access.
+- Reviews: PR #44 (Marin, step 2). I read the two changed files and checked a compile and run of `Main` (done with Claude on a copy of the branch). I did not run `mvn test` myself, CI was green. My first review was only a "Comment" and did not unblock the merge because of the branch rule. I submitted an "Approve" and merged. PR #48 (README) and PR #49 (remove two unused images) were reviewed and merged by me.
+- PR #47 (`english-messages`): translated the German error messages and demo texts in the code to English, so `v2` and `v3` print English. I prepared the change with Claude, Marin merged it.
+- Check of `v2`: pulled it on my Mac with `--platform linux/amd64` and ran it. The digest `sha256:6b02e392...15e89` is the same as in Marin's push output.
+- Step 4 (03.11.2026): pulled `v3` and ran it. The hotel demo, the reservation demo and the user demo appear, all in English. I set `latest` with `docker buildx imagetools create` from `v3`. Both tags have the same digest `sha256:9b62cc3e...d77375`.
+- I used Claude (chat and Claude Code) to help with code, reviews and this report. It never commits, pushes or merges. I run the builds and do the Git steps myself.
+
+What did not go as planned:
+- I merged PR #41 (the report plan) myself, as the author. It only changed documentation.
+- Step 3 was requested for 31.10.2026 and was merged on 02.11.2026 (PR #50). `v3` was pushed in the evening of 02.11.2026. Docker Hub shows only relative times ("last pushed about 16 hours ago"), so this time is approximate.
+- `v1` prints German text, `v2` and `v3` print English.
 
 ## Own part: Marin
-`[FILL IN]`
+(Text and screenshots by Marin, added to the report by Patrick.)
+
+Role: step 0 (branch rule on main) and step 2 of the chain (pull `v1`, add the reservation demo, build and push `v2`). Reviewer and merger of Seungheon's PR #50.
+
+- Branch rule on main (step 0, 28 October): pull request with 1 approval required, status check `Test hotel-app` required and branch up to date with main, force pushes and deletion blocked, also for admins. Later I added: approvals are dismissed when new commits are pushed, the "Update branch" button, Dependabot alerts and secret scanning with push protection. The rule worked: my own PR #44 stayed blocked until Patrick's review was submitted as "Approve" (his first review was a "Comment").
+
+![Branch protection rule on main](Images/a3_marin_branch_rule.png)
+
+- Pull and run `v1`: Docker Desktop with WSL 2 on Windows (architecture x86_64). `docker pull patrickhein1008/hotel-app:v1` showed the index digest `sha256:abce1351…3166a15609`, the same as the one Patrick sent, and `docker run --rm` printed the demo.
+
+![docker pull and docker run of v1](Images/a3_marin_pull_run_v1.png)
+
+- Source out of the image: `docker create --name hotel_tmp patrickhein1008/hotel-app:v1`, `docker cp hotel_tmp:/app/src ./image_source`, `docker rm hotel_tmp`, in a folder outside of the repository. The folder had the same packages and tests as `hotel-app/src` on main.
+
+![Commands to take the source out of the image](Images/a3_marin_source_out_commands.png)
+
+![Source taken out of the image, same packages as on main](Images/a3_marin_source_out_tree.png)
+
+- Change: branch `feature-docker-reservation` from the latest GitHub main. New `hotel.reservation.ReservationDemo` (create a reservation, confirm it, change the dates from Dec 10→12 to Dec 11→14, print the total price: 3 nights × 80.00 = 240.00 EUR) and one line in `Main` that calls it. Sean's line in `Main` stayed untouched. Before the PR I built and ran the image locally to check the output.
+- Pull request #44: CI green, reviewed by Patrick (files, compile and run of `Main`), approved and merged by him. His two cosmetic points (one space too much in front of `ReservationDemo.run();`, import not in alphabetical order) are still open in `Main`.
+
+![PR #44 with Patrick's review and the merge](Images/a3_marin_pr44_review.png)
+
+- Build and push `v2` (28 October): from the merged main `650cd83`. main had moved from `871484d` because PR #47 (English messages) was merged after #44, so `v2` already prints English text. `docker build -t marin971/hotel-app:v2 .`, `docker run --rm` showed both demos, then `docker tag … patrickhein1008/hotel-app:v2` and `docker push`. Digest: `sha256:6b02e392fc401c8f99a3186e2dcb91a714f4f5ea2377c4ee42493a2e62b15e89`. `v2` is amd64 only because I built it on my x86_64 laptop, so the README tells Apple Silicon users to add `--platform linux/amd64`.
+
+![docker tag and docker push of v2 with the digest](Images/a3_marin_push_v2.png)
+
+- Review of step 3: I reviewed Seungheon's PR #50 and ran `Main` with his branch (all three demos). I asked to change the text "Password stored: true", because it read as if the password was stored in plain text. After his fix ("Password stored only as a hash: true") I approved and merged the PR on 2 November.
+- Problems: the Docker installer needed the Windows feature "Virtual Machine Platform" (`wsl --install` as admin and a restart). "failed to connect to the docker API" meant that Docker Desktop was not running. My local clone had GitLab as `origin`, so I added a remote `github` and built from `github/main`.
 
 ## Own part: Seungheon
 `[FILL IN]`
