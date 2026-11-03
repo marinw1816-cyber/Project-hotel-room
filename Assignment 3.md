@@ -135,4 +135,19 @@ Role: step 0 (branch rule on main) and step 2 of the chain (pull `v1`, add the r
 - Problems: the Docker installer needed the Windows feature "Virtual Machine Platform" (`wsl --install` as admin and a restart). "failed to connect to the docker API" meant that Docker Desktop was not running. My local clone had GitLab as `origin`, so I added a remote `github` and built from `github/main`.
 
 ## Own part: Seungheon
-`[FILL IN]`
+Role: step 3 of the chain (pull `v2`, add the user demo, build and push `v3`).
+
+- **Pull and run `v2`:** On Windows 11 with Docker Desktop I pulled `patrickhein1008/hotel-app:v2` and ran it. It prints the hotel demo and the reservation demo. The user demo is not in `v2` yet, as planned.
+
+![docker pull and docker run of v2](Images/seungheon/v3-1.png)
+
+- **Change:** On the branch `feature-docker-user` I added `hotel.user.UserDemo`. It signs up a customer and a receptionist, shows that the password is stored only as a hash, logs in with a right and a wrong password, and shows that a second sign-up with the same name in other letters is rejected. It uses the `UserService` from Assignment 2. `Main` got one line that calls `UserDemo.run()`. Marin's `ReservationDemo` line stayed untouched.
+- **Pull request #50:** CI was green. Marin reviewed it, asked for a clearer output text, I changed it, and he approved and merged the PR on 2 November.
+
+![PR #50 with Marin's approval and the merge](Images/seungheon/v3-4.png)
+
+- **Build and push `v3`:** After the merge I built the image and ran it. It prints all three demos: hotel demo, reservation demo and user demo. Then I pushed it to `patrickhein1008/hotel-app:v3`. `v3` exists only for `linux/amd64`, because I built it on Windows x86_64.
+
+![docker run of v3: hotel demo, reservation demo and user demo](Images/seungheon/v3-2.png)
+
+![docker push of v3 with the digest](Images/seungheon/v3-3.png)
