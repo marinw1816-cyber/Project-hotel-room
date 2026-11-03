@@ -86,22 +86,22 @@ Screenshots of Patrick (Marin's screenshots are in his own part):
 ---
 
 ## Own part: Patrick
-Role: Docker image chain (steps 1 and 4), reviews, repository.
+Role: I built the first image and the Docker Hub repository, did reviews and the last step (pull, check, `latest`).
 
-- Step 1 (PR #43, branch `feature-docker`, merged on 28.10.2026): new `hotel.app.Main` (console demo: room list, search for free rooms from 2026-12-01 to 2026-12-04 for 2 guests, one booking), `mainClass` in the `maven-jar-plugin` of `hotel-app/pom.xml`, `Dockerfile` and `.dockerignore` in `hotel-app`.
-- Dockerfile: multi-stage. Stage 1 (`maven:3.9.6-eclipse-temurin-21`) builds the JAR with `mvn -B clean package -DskipTests`, the tests already run in CI. Stage 2 (`eclipse-temurin:21-jre`) runs it with `java -jar /app/hotel-app.jar`. `src` and `pom.xml` are copied into the runtime image, so the others can take the source out with `docker cp`.
-- `v1`: built with Docker Buildx for `linux/amd64` and `linux/arm64` and pushed to `patrickhein1008/hotel-app`. Its output is German, the texts in the code were translated later. `v2` and `v3` were built on Windows laptops and are `linux/amd64` only. On my Apple Silicon Mac they need `--platform linux/amd64`, otherwise `docker pull` fails with "no matching manifest for linux/arm64/v8".
-- Docker Hub: I created the repository. The tags page shows that Marin (`marin971`) pushed `v2` and Seungheon (`zakrikra`) pushed `v3`, so both have push access.
-- Reviews: PR #44 (Marin, step 2). I read the two changed files and checked a compile and run of `Main` (done with Claude on a copy of the branch). I did not run `mvn test` myself, CI was green. My first review was only a "Comment" and did not unblock the merge because of the branch rule. I submitted an "Approve" and merged. PR #48 (README) and PR #49 (remove two unused images) were reviewed and merged by me.
-- PR #47 (`english-messages`): translated the German error messages and demo texts in the code to English, so `v2` and `v3` print English. I prepared the change with Claude, Marin merged it.
-- Check of `v2`: pulled it on my Mac with `--platform linux/amd64` and ran it. The digest `sha256:6b02e392...15e89` is the same as in Marin's push output.
-- Step 4 (03.11.2026): pulled `v3` and ran it. The hotel demo, the reservation demo and the user demo appear, all in English. I set `latest` with `docker buildx imagetools create` from `v3`. Both tags have the same digest `sha256:9b62cc3e...d77375`.
-- I used Claude (chat and Claude Code) to help with code, reviews and this report. It never commits, pushes or merges. I run the builds and do the Git steps myself.
+- **Step 1 (PR #43, merged on 28.10.2026):** I added `hotel.app.Main`. It is a small console demo. It lists the rooms, searches free rooms from 2026-12-01 to 2026-12-04 for 2 guests and makes one booking. I also set `mainClass` in the `pom.xml`, so `java -jar` can start the app, and I wrote the `Dockerfile` and a `.dockerignore`.
+- **Dockerfile:** It has two stages. The first one (`maven:3.9.6-eclipse-temurin-21`) builds the JAR. The second one (`eclipse-temurin:21-jre`) only runs it, so the final image is smaller. I also copy `src` and `pom.xml` into the final image. That way Marin and Sean can take the source code out with `docker cp`.
+- **`v1`:** I built it with Buildx for `linux/amd64` and `linux/arm64` and pushed it to `patrickhein1008/hotel-app`. Its output is still German, because we translated the texts later. `v2` and `v3` were built on Windows and only exist for `linux/amd64`. On my Mac (Apple Silicon) I need `--platform linux/amd64` for them. Without it `docker pull` says "no matching manifest for linux/arm64/v8".
+- **Docker Hub:** I created the repository. Marin pushed `v2` and Sean pushed `v3`, you can see this on the tags page, so both have access.
+- **Reviews:** For PR #44 (Marin, step 2) I read the two changed files. A compile and run of `Main` was done with Claude on a copy of the branch. I did not run `mvn test` myself, but CI was green. My first review was only a "Comment", so the branch rule still blocked the merge. Then I submitted an "Approve" and merged. I also reviewed and merged PR #48 (README) and PR #49 (two unused images).
+- **PR #47:** I translated the German error messages and demo texts to English, with help from Claude. Marin merged it. Because of this, `v2` and `v3` print English.
+- **Check of `v2`:** I pulled it with `--platform linux/amd64` and ran it. The digest `sha256:6b02e392...15e89` is the same as in Marin's push output.
+- **Step 4 (03.11.2026):** I pulled `v3` and ran it. All three demos show up in English: hotel demo, reservation demo and user demo. Then I set `latest` from `v3` with `docker buildx imagetools create`. Both tags have the same digest, `sha256:9b62cc3e...d77375`.
+- **Claude:** I used Claude (chat and Claude Code) for code, reviews and this report. It never commits, pushes or merges. I run the builds and do the Git steps myself.
 
 What did not go as planned:
-- I merged PR #41 (the report plan) myself, as the author. It only changed documentation.
-- Step 3 was requested for 31.10.2026 and was merged on 02.11.2026 (PR #50). `v3` was pushed in the evening of 02.11.2026. Docker Hub shows only relative times ("last pushed about 16 hours ago"), so this time is approximate.
-- `v1` prints German text, `v2` and `v3` print English.
+- I merged PR #41 (the report plan) myself, although I was the author. It only changed documentation.
+- Step 3 was requested for 31.10.2026, but it was merged on 02.11.2026 (PR #50). `v3` was pushed in the evening of 02.11. Docker Hub only shows "last pushed about 16 hours ago", so the time is approximate.
+- `v1` prints German, `v2` and `v3` print English.
 
 ## Own part: Marin
 (Text and screenshots by Marin, added to the report by Patrick.)
