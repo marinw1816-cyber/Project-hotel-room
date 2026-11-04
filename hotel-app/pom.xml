@@ -1,50 +1,70 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
+  <!-- Spring Boot parent: manages versions of all Spring and test libraries -->
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.2</version>
+    <relativePath/>
+  </parent>
+
   <groupId>hotel</groupId>
   <artifactId>hotel-app</artifactId>
   <version>1.0.0</version>
+
   <properties>
-    <maven.compiler.release>21</maven.compiler.release>
+    <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <junit.version>6.0.3</junit.version>
+    <!-- JUnit 6: same version Spring Boot 4.1.2 manages, pinned here on purpose -->
+    <junit-jupiter.version>6.0.3</junit-jupiter.version>
   </properties>
+
   <dependencies>
-    <!-- JUnit 6 -->
+    <!-- REST endpoints with Spring MVC and embedded Tomcat -->
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>${junit.version}</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
+    </dependency>
+    <!-- Database access with JPA and Hibernate -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <!-- Health endpoint /actuator/health -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <!-- MariaDB JDBC driver, only needed at runtime -->
+    <dependency>
+      <groupId>org.mariadb.jdbc</groupId>
+      <artifactId>mariadb-java-client</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- In-memory database for tests (no MariaDB in CI) -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Test tools: JUnit Jupiter, AssertJ, Mockito, Spring test support -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
-      <!-- Java compiler -->
+      <!-- Build an executable JAR that starts the Spring Boot app -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.15.0</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <release>${maven.compiler.release}</release>
-        </configuration>
-      </plugin>
-      <!-- Run JUnit tests -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.4</version>
-      </plugin>
-      <!-- Create JAR -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>hotel.app.Main</mainClass>
-            </manifest>
-          </archive>
+          <!-- Two main methods exist (Main, HotelApplication), so name the start class -->
+          <mainClass>hotel.app.HotelApplication</mainClass>
         </configuration>
       </plugin>
     </plugins>
