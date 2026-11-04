@@ -108,7 +108,7 @@ What did not go as planned:
 
 Role: step 0 (branch rule on main) and step 2 of the chain (pull `v1`, add the reservation demo, build and push `v2`). Reviewer and merger of Seungheon's PR #50.
 
-- Branch rule on main (step 0, 28 October): pull request with 1 approval required, status check `Test hotel-app` required and branch up to date with main, force pushes and deletion blocked, also for admins. Later I added: approvals are dismissed when new commits are pushed, the "Update branch" button, Dependabot alerts and secret scanning with push protection. The rule worked: my own PR #44 stayed blocked until Patrick's review was submitted as "Approve" (his first review was a "Comment").
+- Branch rule on main (step 0, 28 October): pull request with 1 approval required, status check `Test hotel-app` required and branch up to date with main, force pushes blocked, also for admins. Later I added: approvals are dismissed when new commits are pushed, the "Update branch" button, Dependabot alerts and secret scanning with push protection. The rule worked: my own PR #44 stayed blocked until Patrick's review was submitted as "Approve" (his first review was a "Comment").
 
 ![Branch protection rule on main](Images/a3_marin_branch_rule.png)
 
