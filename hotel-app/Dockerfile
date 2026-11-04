@@ -18,5 +18,7 @@ COPY --from=build /app/target/*.jar /app/hotel-app.jar
 # Copy source code and pom.xml so they can be extracted later with docker cp
 COPY --from=build /app/src /app/src
 COPY --from=build /app/pom.xml /app/pom.xml
+# The Spring Boot app listens on port 8080
+EXPOSE 8080
 # Start the app when the container runs
 ENTRYPOINT ["java","-jar","/app/hotel-app.jar"]
