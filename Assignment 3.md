@@ -18,7 +18,7 @@ Status: done. Sections 1 to 4 describe what we agreed to do. Section 5 and the o
 |---|---|---|---|---|---|
 | 0 | Marin | Branch rule on main (review required, no force push), Docker Hub access for the team | none | none | none |
 | 0 | all | Docker installed, `docker run hello-world`, Docker Hub account | none | none | none |
-| 1 | Patrick | `Main`, `mainClass` in `pom.xml`, Dockerfile, `.dockerignore`, build, run, first push | `feature-docker` | Marin | `v1` |
+| 1 | Patrick | `Main`, `mainClass` in `pom.xml`, Dockerfile, `.dockerignore`, build, run, first push | `feature-docker` | Seungheon | `v1` |
 | 2 | Marin | Pull `v1`, run it, take the source out of the image, add the reservation demo, build, push | `feature-docker-reservation` | Patrick | `v2` |
 | 3 | Seungheon | Pull `v2`, run it, add the user demo, build, push | `feature-docker-user` | Marin | `v3` |
 | 4 | Patrick | Pull `v3`, check that all three parts run, tag `latest`, collect screenshots, write the report | `report-docker` | Marin | `latest` |
@@ -112,6 +112,8 @@ Role: step 0 (branch rule on main) and step 2 of the chain (pull `v1`, add the r
 
 ![Branch protection rule on main](Images/a3_marin_branch_rule.png)
 
+![Branch rule settings: 1 approval, Test hotel-app required, no bypass, no force push](Images/a3_marin_branch_rule_settings.png)
+
 - Pull and run `v1`: Docker Desktop with WSL 2 on Windows (architecture x86_64). `docker pull patrickhein1008/hotel-app:v1` showed the index digest `sha256:abce1351…3166a15609`, the same as the one Patrick sent, and `docker run --rm` printed the demo.
 
 ![docker pull and docker run of v1](Images/a3_marin_pull_run_v1.png)
@@ -122,6 +124,8 @@ Role: step 0 (branch rule on main) and step 2 of the chain (pull `v1`, add the r
 
 ![Source taken out of the image, same packages as on main](Images/a3_marin_source_out_tree.png)
 
+![Source taken out of the image: test folder](Images/a3_marin_source_out_tree_test.png)
+
 - Change: branch `feature-docker-reservation` from the latest GitHub main. New `hotel.reservation.ReservationDemo` (create a reservation, confirm it, change the dates from Dec 10→12 to Dec 11→14, print the total price: 3 nights × 80.00 = 240.00 EUR) and one line in `Main` that calls it. Sean's line in `Main` stayed untouched. Before the PR I built and ran the image locally to check the output.
 - Pull request #44: CI green, reviewed by Patrick (files, compile and run of `Main`), approved and merged by him. His two cosmetic points (one space too much in front of `ReservationDemo.run();`, import not in alphabetical order) are still open in `Main`.
 
@@ -131,7 +135,9 @@ Role: step 0 (branch rule on main) and step 2 of the chain (pull `v1`, add the r
 
 ![docker tag and docker push of v2 with the digest](Images/a3_marin_push_v2.png)
 
-- Review of step 3: I reviewed Seungheon's PR #50 and ran `Main` with his branch (all three demos). I asked to change the text "Password stored: true", because it read as if the password was stored in plain text. After his fix ("Password stored only as a hash: true") I approved and merged the PR on 2 November.
+- Review of step 3: I reviewed Seungheon's PR [#50](https://github.com/marinw1816-cyber/Project-hotel-room/pull/50) (two changed files, CI green). I asked to change the text "Password stored: true", because it read as if the password was stored in plain text. After his fix ("Password stored only as a hash: true") I approved and merged the PR on 2 November. Afterwards I pulled latest and checked that all three demos run.
+
+![docker run of latest: all three demos run](Images/a3_marin_run_latest.png)
 - Problems: the Docker installer needed the Windows feature "Virtual Machine Platform" (`wsl --install` as admin and a restart). "failed to connect to the docker API" meant that Docker Desktop was not running. My local clone had GitLab as `origin`, so I added a remote `github` and built from `github/main`.
 
 ## Own part: Seungheon
