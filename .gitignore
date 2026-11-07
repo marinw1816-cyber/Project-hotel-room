@@ -3,3 +3,6 @@ target/
 .project
 .classpath
 .settings/
+
+# Local secrets for Docker Compose
+.env

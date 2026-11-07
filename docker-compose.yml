@@ -1,0 +1,49 @@
+# Hotel app with MariaDB; values come from .env (template: .env.example)
+name: hotel-compose
+
+services:
+  # Database container
+  mariadb:
+    image: mariadb:11.4
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?set in .env}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:?set in .env}
+      MARIADB_USER: ${MARIADB_USER:?set in .env}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?set in .env}
+    volumes:
+      # Keep database files when the container is removed
+      - hotel-db-data:/var/lib/mysql
+    networks:
+      - hotel-net
+    # No ports: the database is reachable only inside hotel-net
+    healthcheck:
+      # Script from the image; reads its own credentials, no password here
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Spring Boot application
+  hotel-app:
+    build: ./hotel-app
+    depends_on:
+      mariadb:
+        # Start only after the database healthcheck passes
+        condition: service_healthy
+    environment:
+      # "mariadb" is the service name, resolved by Docker DNS
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/${MARIADB_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${MARIADB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MARIADB_PASSWORD}
+    ports:
+      - "8080:8080"
+    networks:
+      - hotel-net
+    restart: unless-stopped
+
+volumes:
+  hotel-db-data:
+
+networks:
+  hotel-net:
