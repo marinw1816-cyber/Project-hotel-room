@@ -77,7 +77,9 @@ On Windows it's `Copy-Item .env.example .env` and `curl.exe` instead of `curl`.
 ![PR #53 approved and merged by Seungheon](Images/a4_patrick_pr53_approve.png)
 
 ### Step 2 (Marin, Windows)
-[FILL IN: Marin's screenshots]
+![mvn -B test: 51 tests, BUILD SUCCESS](Images/a4_marin_tests_green.png)
+![docker compose ps and /actuator/health with db UP (MariaDB)](Images/a4_marin_compose_ps_health.png)
+![CRUD with curl: POST 201, GET, PUT 200, DELETE 204, GET 404](Images/a4_marin_api_crud_curl.png)
 
 My review of step 2 (Patrick, Mac, 09.11.):
 ![curl tests against MariaDB: 201, 200, 200, 200, 409, 400, 404](Images/a4_patrick_review_pr54_crud.png)
@@ -109,8 +111,20 @@ What did not go as planned:
 - [FILL IN or delete]
 
 ## Own part: Marin
-(Text and screenshots by Marin, added by Patrick.)
-[FILL IN]
+(Text by Marin, added by Patrick. His screenshots are in part 5, step 2.)
+
+Role: step 2 (room REST API in `hotel.room`), reviewer of step 3 and of the report.
+
+- **What PR #54 adds:** four classes in the new package `hotel.room`. `RoomEntity` is the room as it is stored in the table `room` (`roomNumber` is the `@Id`, set by the admin, `capacity`, `pricePerNight` as `decimal(10,2)`). `RoomRepository` is a Spring Data JPA interface, so there is no SQL in our code. `RoomDto` is the JSON body. `RoomController` has the five endpoints from Patrick's contract of 04.11. `hotel.model.Room` is unchanged.
+- **Rules:** the same as in `hotel.model.Room`: capacity > 0, price >= 0, room number > 0 → otherwise 400. Unknown room → 404, POST with an existing number → 409, POST returns 201 with a `Location` header, DELETE returns 204. In a PUT the room number always comes from the URL, a number in the body is ignored.
+- **Tests:** 8 new tests in `RoomControllerTest`, one per case of the contract (201 + Location, 409, 400, list, 200/404, PUT does not change the room number, PUT 404/400, DELETE 204 then 404). They use H2, so no MariaDB is needed in CI. I ran `mvn -B test` in a Maven Docker container on Windows: 51 tests, 0 failures.
+- **Test with Docker Compose on Windows:** `.env` from `.env.example` with my own passwords, then `docker compose up -d --build`. `docker compose ps` showed both containers running and `mariadb` healthy, and `/actuator/health` showed `db` UP with MariaDB.
+- **CRUD with curl against MariaDB:** POST room 101 → 201 with `Location: http://localhost:8080/api/rooms/101`, GET list → room 101, PUT capacity 3 and price 95.50 → 200, DELETE → 204, GET 101 → 404. To avoid quoting problems with JSON in PowerShell I put the bodies in small files and used `curl.exe --data "@room.json"`. Then `docker compose down` (without `-v`).
+- PR #54 was reviewed, approved and merged by Patrick on 09.11.
+
+What did not go as planned:
+- My first test run failed: `@SpringBootTest` could not find the Spring configuration, because the test is in `hotel.room` and `HotelApplication` is in `hotel.app` (Spring only searches the packages above the test). Fixed with `@SpringBootTest(classes = HotelApplication.class)`.
+- The error answers (400, 404, 409) only show status, error and path, not the message like "Room 101 already exists", because Spring Boot hides it by default (Patrick's note in the review). Not changed yet.
 
 ## Own part: Seungheon
 (Text and screenshots by Seungheon, added by Patrick.)
