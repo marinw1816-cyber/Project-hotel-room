@@ -56,10 +56,9 @@ public class Reservation {
     public long nights() {
         return ChronoUnit.DAYS.between(checkIn, checkOut);
     }
-
 /**
- * test
- */
+ * test for presentation 2
+ * */
 
     public boolean overlaps(LocalDate from, LocalDate to) {
         return checkIn.isBefore(to) && from.isBefore(checkOut);
