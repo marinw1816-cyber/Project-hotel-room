@@ -57,9 +57,9 @@ public class Reservation {
         return ChronoUnit.DAYS.between(checkIn, checkOut);
     }
 /**
- * test for presentation 2
+ * test assignment 2
  * */
-
+ 
     public boolean overlaps(LocalDate from, LocalDate to) {
         return checkIn.isBefore(to) && from.isBefore(checkOut);
     }
