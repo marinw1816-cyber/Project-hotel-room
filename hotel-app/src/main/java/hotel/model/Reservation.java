@@ -56,10 +56,11 @@ public class Reservation {
     public long nights() {
         return ChronoUnit.DAYS.between(checkIn, checkOut);
     }
-/**
- * test assignment 2
- * */
 
+    /**
+     * Checks if this reservation overlaps with the period from {@code from} to {@code to}.
+     * Back-to-back stays do not overlap: check-out on the 4th and check-in on the 4th is allowed.
+     */
     public boolean overlaps(LocalDate from, LocalDate to) {
         return checkIn.isBefore(to) && from.isBefore(checkOut);
     }
