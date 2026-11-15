@@ -86,8 +86,14 @@ My review of step 2 (Patrick, Mac, 09.11.):
 ![DESCRIBE and SELECT in MariaDB (docker compose exec mariadb mariadb -u hoteluser -p hoteldb), then DELETE 204 and GET 404](Images/a4_patrick_review_pr54_db.png)
 ![My approve on PR #54](Images/a4_patrick_review_pr54_approve.png)
 
-### Step 3 (Seungheon, Windows)
-[FILL IN]
+### Step 3 (Seungheon, Windows, 15.11.)
+![docker compose ps: mariadb healthy, hotel-app on port 8080](Images/a4_seungheon_1_compose_ps.png)
+![Health endpoint: db is UP with MariaDB](Images/a4_seungheon_2_health.png)
+![curl tests with room 201: 201, 409, 400, 200, 200, 404](Images/a4_seungheon_3_crud.png)
+![Room 201 in MariaDB: SHOW TABLES, DESCRIBE and SELECT](Images/a4_seungheon_4_mariadb.png)
+![docker compose down and up again: room 201 is still there](Images/a4_seungheon_5_volume_down.png)
+![docker compose down -v and up again: room 201 is gone](Images/a4_seungheon_6_volume_down_v.png)
+![After the fix the error answers show the message](Images/a4_seungheon_7_error_message.png)
 
 ## 6. Rules
 - Own branch from `main`, PR with a description, CI (`Test hotel-app`) has to be green.
@@ -127,5 +133,14 @@ What did not go as planned:
 - The error answers (400, 404, 409) only show status, error and path, not the message like "Room 101 already exists", because Spring Boot hides it by default (Patrick's note in the review). Not changed yet.
 
 ## Own part: Seungheon
-(Text and screenshots by Seungheon, added by Patrick.)
-[FILL IN]
+
+Role: step 3, testing everything together on Windows.
+
+- **Test on Windows:** I started the stack with Patrick's compose file and Marin's API on Windows 11 with Docker Desktop. Both containers came up, MariaDB was healthy and `/actuator/health` showed the database as UP.
+- **API:** I tested all endpoints with curl and room 201. Every status code was the same as in our contract. Like Marin, I put the JSON bodies in files to avoid quoting problems in PowerShell.
+- **Data and volume:** In MariaDB I could see room 201 in the table `room`. After `docker compose down` and `up` the room was still there, because the data is saved in the volume. After `down -v` it was gone and the list was empty.
+- **Error messages:** I fixed Patrick's open point from the review of PR #54, so the error answers now show the message, for example "Room 201 already exists". In Spring Boot 4 this setting is `spring.web.error.include-message`. The old name `server.error.include-message` that most guides still use does nothing anymore.
+- **PR #60:** CI was green.
+
+What did not go as planned:
+- My first curl right after `docker compose up` returned nothing, because the app was not ready yet. A few seconds later it worked, the same thing happened to Patrick.
