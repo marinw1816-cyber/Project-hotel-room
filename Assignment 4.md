@@ -27,7 +27,7 @@ Status: in progress. Part 1 to 4 is what we planned, part 5 and the own parts sh
 Plan vs. reality:
 - Step 1: PR #53, Seungheon approved and merged it on 07.11.
 - Step 2: PR #54, I approved and merged it on 09.11.
-- Step 3: [FILL IN]
+- Step 3: PR #60, Marin approved and merged it on 15.11.
 - Step 4: [FILL IN]
 
 Every step started only after the PR before was merged.
@@ -140,7 +140,7 @@ Role: step 3, testing everything together on Windows.
 - **API:** I tested all endpoints with curl and room 201. Every status code was the same as in our contract. Like Marin, I put the JSON bodies in files to avoid quoting problems in PowerShell.
 - **Data and volume:** In MariaDB I could see room 201 in the table `room`. After `docker compose down` and `up` the room was still there, because the data is saved in the volume. After `down -v` it was gone and the list was empty.
 - **Error messages:** I fixed Patrick's open point from the review of PR #54, so the error answers now show the message, for example "Room 201 already exists". In Spring Boot 4 this setting is `spring.web.error.include-message`. The old name `server.error.include-message` that most guides still use does nothing anymore.
-- **PR #60:** CI was green.
+- **PR #60:** CI was green. Marin reviewed and merged it on 15.11.
 
 What did not go as planned:
 - My first curl right after `docker compose up` returned nothing, because the app was not ready yet. A few seconds later it worked, the same thing happened to Patrick.
