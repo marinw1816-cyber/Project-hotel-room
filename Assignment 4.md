@@ -26,7 +26,7 @@ Status: done. Part 1 to 4 is what we planned, part 5 and the own parts show what
 
 Plan vs. reality:
 - Step 1: PR #53, Seungheon approved and merged it on 07.11.
-- Step 2: PR #54, I approved and merged it on 09.11.
+- Step 2: PR #54, Patrick approved and merged it on 09.11.
 - Step 3: PR #60, Marin approved and merged it on 16.11.
 - Step 4: this report on `report-compose`, pull request with Marin as reviewer.
 
@@ -130,7 +130,7 @@ Role: step 2 (room REST API in `hotel.room`), reviewer of step 3 and of the repo
 
 What did not go as planned:
 - My first test run failed: `@SpringBootTest` could not find the Spring configuration, because the test is in `hotel.room` and `HotelApplication` is in `hotel.app` (Spring only searches the packages above the test). Fixed with `@SpringBootTest(classes = HotelApplication.class)`.
-- The error answers (400, 404, 409) only show status, error and path, not the message like "Room 101 already exists", because Spring Boot hides it by default (Patrick's note in the review). Not changed yet. (Fixed later by Seungheon in PR #60.)
+- The error answers (400, 404, 409) only show status, error and path, not the message like "Room 101 already exists", because Spring Boot hides it by default (Patrick's note in the review). Fixed later by Seungheon in PR #60.
 
 ## Own part: Seungheon
 
