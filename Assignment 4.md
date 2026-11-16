@@ -5,7 +5,7 @@ Team: Exchange student
 
 # Assignment 4 (Docker Compose): Report
 
-Status: in progress. Part 1 to 4 is what we planned, part 5 and the own parts show what we actually did.
+Status: done. Part 1 to 4 is what we planned, part 5 and the own parts show what we actually did.
 
 ## 1. Application, Dockerfile and docker-compose.yml
 - We use the same `hotel-app` as in Assignment 2 and 3 (Java 21, Maven).
@@ -27,8 +27,8 @@ Status: in progress. Part 1 to 4 is what we planned, part 5 and the own parts sh
 Plan vs. reality:
 - Step 1: PR #53, Seungheon approved and merged it on 07.11.
 - Step 2: PR #54, I approved and merged it on 09.11.
-- Step 3: PR #60, Marin approved and merged it on 15.11.
-- Step 4: [FILL IN]
+- Step 3: PR #60, Marin approved and merged it on 16.11.
+- Step 4: this report on `report-compose`, pull request with Marin as reviewer.
 
 Every step started only after the PR before was merged.
 
@@ -94,6 +94,9 @@ My review of step 2 (Patrick, Mac, 09.11.):
 ![docker compose down and up again: room 201 is still there](Images/a4_seungheon_5_volume_down.png)
 ![docker compose down -v and up again: room 201 is gone](Images/a4_seungheon_6_volume_down_v.png)
 ![After the fix the error answers show the message](Images/a4_seungheon_7_error_message.png)
+![test-compose.ps1: 9 checks, all OK, including DELETE 204 and GET 404 after the delete](Images/a4_seungheon_8_script.png)
+![docker network inspect: both containers in hotel-compose_hotel-net](Images/a4_seungheon_9_network.png)
+![hotel-app log: connection to MariaDB and Started HotelApplication](Images/a4_seungheon_10_logs.png)
 
 ## 6. Rules
 - Own branch from `main`, PR with a description, CI (`Test hotel-app`) has to be green.
@@ -110,11 +113,8 @@ Role: step 1, review of Marin's step 2, report.
 - To check that the two containers really talk to each other I used `/actuator/health` (shows `db` UP with MariaDB) and the app log, where you can see the connection to MariaDB.
 - Seungheon approved and merged PR #53 on 07.11.
 - **Review of step 2 (PR #54):** I took Marin's branch and ran `mvn -B test` myself, 51 tests green. Then I started the stack with his code and tried every endpoint with curl. All status codes were like we agreed. I also sent a PUT with room number 555 in the body and the room stayed 101, which is what we wanted. With `DESCRIBE` and `SELECT` I checked in MariaDB that the room is really saved there. After that I approved and merged.
-- Two small things I wrote in the review for later: the error answers don't show Marin's message (Spring Boot hides it by default), and the README still talks about the old console demo.
+- Two small things I wrote in the review for later: the error answers didn't show Marin's message (Spring Boot hides it by default), and the README still talks about the old console demo. Seungheon fixed the error messages in PR #60, the README is still open.
 - Small pitfall: right after `docker compose up -d` the app needs a second or two. My first curl was too early and showed nothing.
-
-What did not go as planned:
-- [FILL IN or delete]
 
 ## Own part: Marin
 (Text by Marin, added by Patrick. His screenshots are in part 5, step 2.)
@@ -130,7 +130,7 @@ Role: step 2 (room REST API in `hotel.room`), reviewer of step 3 and of the repo
 
 What did not go as planned:
 - My first test run failed: `@SpringBootTest` could not find the Spring configuration, because the test is in `hotel.room` and `HotelApplication` is in `hotel.app` (Spring only searches the packages above the test). Fixed with `@SpringBootTest(classes = HotelApplication.class)`.
-- The error answers (400, 404, 409) only show status, error and path, not the message like "Room 101 already exists", because Spring Boot hides it by default (Patrick's note in the review). Not changed yet.
+- The error answers (400, 404, 409) only show status, error and path, not the message like "Room 101 already exists", because Spring Boot hides it by default (Patrick's note in the review). Not changed yet. (Fixed later by Seungheon in PR #60.)
 
 ## Own part: Seungheon
 
@@ -139,8 +139,8 @@ Role: step 3, testing everything together on Windows.
 - **Test on Windows:** I started the stack with Patrick's compose file and Marin's API on Windows 11 with Docker Desktop. Both containers came up, MariaDB was healthy and `/actuator/health` showed the database as UP.
 - **API:** I tested all endpoints with curl and room 201. Every status code was the same as in our contract. Like Marin, I put the JSON bodies in files to avoid quoting problems in PowerShell.
 - **Data and volume:** In MariaDB I could see room 201 in the table `room`. After `docker compose down` and `up` the room was still there, because the data is saved in the volume. After `down -v` it was gone and the list was empty.
-- **Error messages:** I fixed Patrick's open point from the review of PR #54, so the error answers now show the message, for example "Room 201 already exists". In Spring Boot 4 this setting is `spring.web.error.include-message`. The old name `server.error.include-message` that most guides still use does nothing anymore.
-- **PR #60:** CI was green. Marin reviewed and merged it on 15.11.
+- **Error messages:** I fixed Patrick's open point from the review of PR #54, so the error answers now show the message, for example "Room 201 already exists". In Spring Boot 4 this setting is `spring.web.error.include-message`.
+- **PR #60:** CI was green. Marin reviewed and merged it on 16.11.
 
 What did not go as planned:
 - My first curl right after `docker compose up` returned nothing, because the app was not ready yet. A few seconds later it worked, the same thing happened to Patrick.
