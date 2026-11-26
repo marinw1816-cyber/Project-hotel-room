@@ -1,10 +1,19 @@
-image: maven:3.9.11-eclipse-temurin-25
+# GitLab CI/CD pipeline for the hotel app (Final Project)
+# Runs on every push to GitLab: build, test, package.
+# Docker images are built and pushed by Jenkins (see Jenkinsfile), not here.
+
+# Same Maven and Java 21 image as in hotel-app/Dockerfile
+image: maven:3.9.6-eclipse-temurin-21
 
 variables:
+  # Keep downloaded libraries inside the project folder, so the cache can store them
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-  APP_ARGUMENT: "Wonderful"
+  # Short Maven output without download logs
+  MAVEN_CLI: "--batch-mode --no-transfer-progress"
 
+# Reuse downloaded libraries in the next pipeline (faster)
 cache:
+  key: hotel-app-maven
   paths:
     - .m2/repository/
 
@@ -12,89 +21,36 @@ stages:
   - build
   - test
   - package
-  - run
-  - deploy
-
-before_script:
-  - echo "Setting up CI/CD environment"
-  - mvn --version
-  - java -version
 
 build:
   stage: build
-
   script:
-    - echo "BUILD STAGE"
-    - echo "Compiling Java source code"
-    - cd Example_101
-    - mvn --batch-mode --no-transfer-progress clean compile
-
-  artifacts:
-    name: "example-101-build"
-    paths:
-      - Example_101/target/classes/
-    expire_in: 1 week
+    - cd hotel-app
+    - mvn $MAVEN_CLI clean compile
 
 test:
   stage: test
-
   script:
-    - echo "TEST STAGE"
-    - echo "Running JUnit tests"
-    - cd Example_101
-    - mvn --batch-mode --no-transfer-progress test
-
+    - cd hotel-app
+    # Tests use the H2 in-memory database, no MariaDB needed
+    - mvn $MAVEN_CLI test
   artifacts:
+    # Keep the reports even if a test fails
     when: always
-    name: "example-101-test-results"
-    paths:
-      - Example_101/target/surefire-reports/
     reports:
+      # GitLab shows the results in the "Tests" tab of the pipeline
       junit:
-        - Example_101/target/surefire-reports/TEST-*.xml
+        - hotel-app/target/surefire-reports/TEST-*.xml
     expire_in: 1 week
-
-  allow_failure: false
 
 package:
   stage: package
-
   script:
-    - echo "PACKAGE STAGE"
-    - echo "Creating executable JAR"
-    - cd Example_101
-    - mvn --batch-mode --no-transfer-progress clean package -DskipTests
-    - echo "Contents of target directory:"
-    - ls -la target/
-
+    - cd hotel-app
+    # Tests already ran in the test stage
+    - mvn $MAVEN_CLI clean package -DskipTests
   artifacts:
-    name: "example-101-jar"
+    # The runnable Spring Boot JAR, downloadable from the pipeline page
     paths:
-      - Example_101/target/*.jar
-    expire_in: 1 year
-
-run:
-  stage: run
-
-  script:
-    - echo "RUN STAGE"
-    - cd Example_101
-    - echo "Contents of target directory:"
-    - ls -la target/
-    - echo "Starting application..."
-    - java -jar target/*.jar "$APP_ARGUMENT"
-
-  allow_failure: false
-
-deploy:
-  stage: deploy
-
-  script:
-    - echo "DEPLOY STAGE"
-    - echo "Deploying Example_101"
-    - echo "Deployment completed successfully"
-
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-
-  when: on_success
+      - hotel-app/target/hotel-app-*.jar
+    expire_in: 1 month
