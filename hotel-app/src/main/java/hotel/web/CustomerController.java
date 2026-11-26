@@ -88,28 +88,28 @@ public class CustomerController {
         return "customer-reservations";
     }
 
-    /** POST /customer/reservations/{id}/cancel: cancels an own reservation. */
-    @PostMapping("/customer/reservations/{id}/cancel")
-    public String cancel(@PathVariable long id, Authentication authentication, RedirectAttributes redirect) {
+    /** POST /customer/reservations/{reservationId}/cancel: cancels an own reservation. */
+    @PostMapping("/customer/reservations/{reservationId}/cancel")
+    public String cancel(@PathVariable long reservationId, Authentication authentication, RedirectAttributes redirect) {
         try {
-            reservationService.cancel(id, authentication.getName());
-            redirect.addFlashAttribute("success", "Reservation " + id + " cancelled.");
+            reservationService.cancel(reservationId, authentication.getName());
+            redirect.addFlashAttribute("success", "Reservation " + reservationId + " cancelled.");
         } catch (IllegalArgumentException | IllegalStateException | NoSuchElementException e) {
             redirect.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/customer/reservations";
     }
 
-    /** POST /customer/reservations/{id}/dates: changes the dates of an own reservation. */
-    @PostMapping("/customer/reservations/{id}/dates")
-    public String changeDates(@PathVariable long id,
+    /** POST /customer/reservations/{reservationId}/dates: changes the dates of an own reservation. */
+    @PostMapping("/customer/reservations/{reservationId}/dates")
+    public String changeDates(@PathVariable long reservationId,
                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
                               Authentication authentication,
                               RedirectAttributes redirect) {
         try {
-            reservationService.changeDates(id, authentication.getName(), checkIn, checkOut);
-            redirect.addFlashAttribute("success", "Reservation " + id + " changed to " + checkIn + " - " + checkOut + ".");
+            reservationService.changeDates(reservationId, authentication.getName(), checkIn, checkOut);
+            redirect.addFlashAttribute("success", "Reservation " + reservationId + " changed to " + checkIn + " - " + checkOut + ".");
         } catch (IllegalArgumentException | IllegalStateException | NoSuchElementException e) {
             redirect.addFlashAttribute("error", e.getMessage());
         }

@@ -82,7 +82,7 @@ class ReservationServiceTest {
     void bookSavesAPendingReservationWithTotalPrice() {
         ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
 
-        ReservationEntity stored = reservations.findById(booked.getId()).orElseThrow();
+        ReservationEntity stored = reservations.findById(booked.getReservationId()).orElseThrow();
         assertEquals("anna", stored.getCustomer().getUsername());
         assertEquals(102, stored.getRoom().getRoomNumber().intValue());
         assertEquals(ReservationStatus.PENDING, stored.getStatus());
@@ -127,21 +127,21 @@ class ReservationServiceTest {
     void cancelFreesTheRoom() {
         ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
 
-        service.cancel(booked.getId(), "anna");
+        service.cancel(booked.getReservationId(), "anna");
 
-        assertEquals(ReservationStatus.CANCELLED, reservations.findById(booked.getId()).orElseThrow().getStatus());
+        assertEquals(ReservationStatus.CANCELLED, reservations.findById(booked.getReservationId()).orElseThrow().getStatus());
         assertEquals(List.of(102, 201), numbers(service.findFreeRooms(day1, day4, 2)));
-        assertThrows(IllegalStateException.class, () -> service.cancel(booked.getId(), "anna"));
+        assertThrows(IllegalStateException.class, () -> service.cancel(booked.getReservationId(), "anna"));
     }
 
     @Test
     void otherUsersCannotCancelOrChangeMyReservation() {
         ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
 
-        assertThrows(NoSuchElementException.class, () -> service.cancel(booked.getId(), "ben"));
+        assertThrows(NoSuchElementException.class, () -> service.cancel(booked.getReservationId(), "ben"));
         assertThrows(NoSuchElementException.class,
-                () -> service.changeDates(booked.getId(), "ben", day4, day4.plusDays(2)));
-        assertEquals(ReservationStatus.PENDING, reservations.findById(booked.getId()).orElseThrow().getStatus());
+                () -> service.changeDates(booked.getReservationId(), "ben", day4, day4.plusDays(2)));
+        assertEquals(ReservationStatus.PENDING, reservations.findById(booked.getReservationId()).orElseThrow().getStatus());
     }
 
     @Test
@@ -150,13 +150,13 @@ class ReservationServiceTest {
         service.book("ben", 102, day4.plusDays(5), day4.plusDays(8), 1);
 
         // own period may overlap with the old dates of the same reservation
-        service.changeDates(anna.getId(), "anna", day1.plusDays(1), day4.plusDays(1));
-        assertEquals(day1.plusDays(1), reservations.findById(anna.getId()).orElseThrow().getCheckIn());
+        service.changeDates(anna.getReservationId(), "anna", day1.plusDays(1), day4.plusDays(1));
+        assertEquals(day1.plusDays(1), reservations.findById(anna.getReservationId()).orElseThrow().getCheckIn());
 
         // overlaps with ben: not possible, old dates stay
         assertThrows(IllegalStateException.class,
-                () -> service.changeDates(anna.getId(), "anna", day4.plusDays(4), day4.plusDays(6)));
-        ReservationEntity stored = reservations.findById(anna.getId()).orElseThrow();
+                () -> service.changeDates(anna.getReservationId(), "anna", day4.plusDays(4), day4.plusDays(6)));
+        ReservationEntity stored = reservations.findById(anna.getReservationId()).orElseThrow();
         assertEquals(day1.plusDays(1), stored.getCheckIn());
         assertEquals(day4.plusDays(1), stored.getCheckOut());
     }
@@ -164,10 +164,10 @@ class ReservationServiceTest {
     @Test
     void cancelledReservationCannotBeChanged() {
         ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
-        service.cancel(booked.getId(), "anna");
+        service.cancel(booked.getReservationId(), "anna");
 
         assertThrows(IllegalStateException.class,
-                () -> service.changeDates(booked.getId(), "anna", day4, day4.plusDays(2)));
+                () -> service.changeDates(booked.getReservationId(), "anna", day4, day4.plusDays(2)));
     }
 
     @Test
@@ -176,22 +176,22 @@ class ReservationServiceTest {
         service.book("ben", 201, day1, day4, 3);
         assertEquals(2, service.allReservations().size());
 
-        service.changeStatus(anna.getId(), ReservationStatus.CONFIRMED);
-        assertEquals(ReservationStatus.CONFIRMED, reservations.findById(anna.getId()).orElseThrow().getStatus());
+        service.changeStatus(anna.getReservationId(), ReservationStatus.CONFIRMED);
+        assertEquals(ReservationStatus.CONFIRMED, reservations.findById(anna.getReservationId()).orElseThrow().getStatus());
 
         // cancelled, then the room is booked by someone else: anna's reservation can't be opened again
-        service.changeStatus(anna.getId(), ReservationStatus.CANCELLED);
+        service.changeStatus(anna.getReservationId(), ReservationStatus.CANCELLED);
         service.book("carl", 102, day1, day4, 2);
-        assertThrows(IllegalStateException.class, () -> service.changeStatus(anna.getId(), ReservationStatus.CONFIRMED));
+        assertThrows(IllegalStateException.class, () -> service.changeStatus(anna.getReservationId(), ReservationStatus.CONFIRMED));
     }
 
     @Test
     void receptionChangesDatesOfAnyReservation() {
         ReservationEntity anna = service.book("anna", 102, day1, day4, 2);
 
-        service.changeDatesByStaff(anna.getId(), day4, day4.plusDays(2));
+        service.changeDatesByStaff(anna.getReservationId(), day4, day4.plusDays(2));
 
-        ReservationEntity stored = reservations.findById(anna.getId()).orElseThrow();
+        ReservationEntity stored = reservations.findById(anna.getReservationId()).orElseThrow();
         assertEquals(day4, stored.getCheckIn());
         assertEquals(day4.plusDays(2), stored.getCheckOut());
     }

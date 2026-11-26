@@ -43,7 +43,7 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
     @Query("""
             select count(r) from ReservationEntity r
             where r.room.roomNumber = :roomNumber
-              and r.id <> :ignoreId
+              and r.reservationId <> :ignoreId
               and r.status <> :cancelled
               and r.checkIn < :checkOut and :checkIn < r.checkOut
             """)

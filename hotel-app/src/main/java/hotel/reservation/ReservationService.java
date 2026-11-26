@@ -103,7 +103,7 @@ public class ReservationService {
         if (reservation.getStatus() == ReservationStatus.CANCELLED && status != ReservationStatus.CANCELLED) {
             lockRoom(reservation.getRoom().getRoomNumber());
             checkFree(reservation.getRoom().getRoomNumber(), reservation.getCheckIn(), reservation.getCheckOut(),
-                    reservation.getId());
+                    reservation.getReservationId());
         }
         reservation.setStatus(status);
         return reservation;
@@ -118,7 +118,7 @@ public class ReservationService {
         validate(checkIn, checkOut, reservation.getGuests(), reservation.getCheckIn());
         int roomNumber = reservation.getRoom().getRoomNumber();
         lockRoom(roomNumber);
-        checkFree(roomNumber, checkIn, checkOut, reservation.getId());
+        checkFree(roomNumber, checkIn, checkOut, reservation.getReservationId());
         reservation.setDates(checkIn, checkOut);
         return reservation;
     }

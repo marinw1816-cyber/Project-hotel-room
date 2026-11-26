@@ -147,10 +147,10 @@ class CustomerControllerTest {
     void cancelWorks() throws Exception {
         ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
 
-        mvc.perform(post("/customer/reservations/" + booked.getId() + "/cancel").with(csrf()))
+        mvc.perform(post("/customer/reservations/" + booked.getReservationId() + "/cancel").with(csrf()))
                 .andExpect(redirectedUrl("/customer/reservations"))
                 .andExpect(flash().attribute("success", containsString("cancelled")));
-        assertEquals(ReservationStatus.CANCELLED, reservations.findById(booked.getId()).orElseThrow().getStatus());
+        assertEquals(ReservationStatus.CANCELLED, reservations.findById(booked.getReservationId()).orElseThrow().getStatus());
     }
 
     @Test
@@ -158,10 +158,10 @@ class CustomerControllerTest {
     void userCannotCancelReservationOfAnotherUser() throws Exception {
         ReservationEntity ofBob = service.book("bob", 102, day1, day4, 2);
 
-        mvc.perform(post("/customer/reservations/" + ofBob.getId() + "/cancel").with(csrf()))
+        mvc.perform(post("/customer/reservations/" + ofBob.getReservationId() + "/cancel").with(csrf()))
                 .andExpect(redirectedUrl("/customer/reservations"))
                 .andExpect(flash().attribute("error", containsString("not found")));
-        assertEquals(ReservationStatus.PENDING, reservations.findById(ofBob.getId()).orElseThrow().getStatus());
+        assertEquals(ReservationStatus.PENDING, reservations.findById(ofBob.getReservationId()).orElseThrow().getStatus());
     }
 
     @Test
@@ -169,12 +169,12 @@ class CustomerControllerTest {
     void changeDatesWorks() throws Exception {
         ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
 
-        mvc.perform(post("/customer/reservations/" + booked.getId() + "/dates").with(csrf())
+        mvc.perform(post("/customer/reservations/" + booked.getReservationId() + "/dates").with(csrf())
                         .param("checkIn", day1.toString())
                         .param("checkOut", day4.plusDays(1).toString()))
                 .andExpect(redirectedUrl("/customer/reservations"))
                 .andExpect(flash().attribute("success", containsString("changed")));
-        assertEquals(day4.plusDays(1), reservations.findById(booked.getId()).orElseThrow().getCheckOut());
+        assertEquals(day4.plusDays(1), reservations.findById(booked.getReservationId()).orElseThrow().getCheckOut());
     }
 
     @Test
