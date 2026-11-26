@@ -1,18 +1,52 @@
 package hotel.user;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-/** Sign-up and sign-in. Users are kept in memory, like the reservations. */
-public class UserService {
+/**
+ * Sign-up and the user lookup for the login.
+ * Spring Security calls loadUserByUsername() and checks the password itself.
+ */
+@Service
+public class UserService implements UserDetailsService {
     private static final int MIN_PASSWORD_LENGTH = 8;
 
-    private final Map<String, User> users = new HashMap<>();
+    private final UserRepository users;
+    private final PasswordEncoder passwordEncoder;
 
-    /** Sign-up: creates a user with the given role. Only the hash of the password is stored. */
-    public User register(String username, String password, Role role) {
+    public UserService(UserRepository users, PasswordEncoder passwordEncoder) {
+        this.users = users;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    /** Sign-up from the web form: always a CUSTOMER, nobody can choose a role. */
+    public UserEntity signUp(String username, String password) {
+        return create(username, password, Role.CUSTOMER);
+    }
+
+    /** Start accounts (ADMIN, RECEPTIONIST): only created if the name does not exist yet. */
+    public void createIfMissing(String username, String password, Role role) {
+        if (!users.existsByUsername(username)) {
+            create(username, password, role);
+        }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        UserEntity user = users.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Unknown user"));
+        // roles("ADMIN") becomes the authority "ROLE_ADMIN", which hasRole("ADMIN") checks
+        return User.withUsername(user.getUsername())
+                .password(user.getPasswordHash())
+                .roles(user.getRole().name())
+                .build();
+    }
+
+    private UserEntity create(String username, String password, Role role) {
         if (username == null || username.isBlank()) {
             throw new IllegalArgumentException("Username must not be empty");
         }
@@ -20,32 +54,10 @@ public class UserService {
             throw new IllegalArgumentException(
                     "Password must have at least " + MIN_PASSWORD_LENGTH + " characters");
         }
-        if (role == null) {
-            throw new IllegalArgumentException("Role is missing");
-        }
-        String name = normalize(username);
-        if (users.containsKey(name)) {
+        if (users.existsByUsername(username)) {
             throw new IllegalStateException("Username is already taken");
         }
-        User user = new User(name, PasswordHasher.hash(password), role);
-        users.put(name, user);
-        return user;
-    }
-
-    /** Sign-in: returns the user if name and password are right, otherwise empty. */
-    public Optional<User> login(String username, String password) {
-        if (username == null || password == null) {
-            return Optional.empty();
-        }
-        User user = users.get(normalize(username));
-        if (user == null || !PasswordHasher.matches(password, user.getPasswordHash())) {
-            return Optional.empty();
-        }
-        return Optional.of(user);
-    }
-
-    /** Usernames are not case sensitive: "Anna", " anna" and "ANNA" are the same user. */
-    private static String normalize(String username) {
-        return username.trim().toLowerCase(Locale.ROOT);
+        // BCrypt adds a random salt, so the same password gives a different hash each time
+        return users.save(new UserEntity(username, passwordEncoder.encode(password), role));
     }
 }

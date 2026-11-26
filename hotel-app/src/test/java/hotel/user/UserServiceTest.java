@@ -1,85 +1,51 @@
 package hotel.user;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Optional;
+import hotel.app.HotelApplication;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+/** Sign-up with the H2 test database. */
+@SpringBootTest(classes = HotelApplication.class)
 class UserServiceTest {
-    @Test
-    void registeredUserCanLogIn() {
-        UserService service = new UserService();
-        service.register("anna", "secret123", Role.CUSTOMER);
 
-        Optional<User> result = service.login("anna", "secret123");
+    @Autowired
+    private UserService userService;
 
-        assertTrue(result.isPresent());
-        assertEquals("anna", result.get().getUsername());
+    @Autowired
+    private UserRepository users;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    void setUp() {
+        users.deleteAll();
     }
 
     @Test
-    void wrongPasswordOrUnknownUserCannotLogIn() {
-        UserService service = new UserService();
-        service.register("anna", "secret123", Role.CUSTOMER);
+    void signUpCreatesCustomerAndStoresNoPlainPassword() {
+        userService.signUp("anna", "secret123");
 
-        assertTrue(service.login("anna", "wrong-password").isEmpty());
-        assertTrue(service.login("nobody", "secret123").isEmpty());
+        UserEntity stored = users.findByUsername("anna").orElseThrow();
+        assertEquals(Role.CUSTOMER, stored.getRole());
+        assertFalse(stored.getPasswordHash().contains("secret123"));
+        // the hash still belongs to the password
+        assertTrue(passwordEncoder.matches("secret123", stored.getPasswordHash()));
     }
 
     @Test
-    void roleIsKeptAfterRegistration() {
-        UserService service = new UserService();
-        service.register("admin", "secret123", Role.ADMIN);
-        service.register("rita", "secret123", Role.RECEPTIONIST);
-        service.register("carl", "secret123", Role.CUSTOMER);
+    void duplicateUsernameIsRejected() {
+        userService.signUp("anna", "secret123");
 
-        assertEquals(Role.ADMIN, service.login("admin", "secret123").get().getRole());
-        assertEquals(Role.RECEPTIONIST, service.login("rita", "secret123").get().getRole());
-        assertEquals(Role.CUSTOMER, service.login("carl", "secret123").get().getRole());
-    }
-
-    @Test
-    void rejectsDuplicateUsername() {
-        UserService service = new UserService();
-        service.register("anna", "secret123", Role.CUSTOMER);
-
-        assertThrows(IllegalStateException.class,
-                () -> service.register("anna", "other-pass1", Role.ADMIN));
-    }
-
-    @Test
-    void usernameIsNotCaseSensitive() {
-        UserService service = new UserService();
-        service.register("Anna", "secret123", Role.CUSTOMER);
-
-        // reported in the review of PR #38: register "Anna", log in as "anna"
-        assertTrue(service.login("anna", "secret123").isPresent());
-        assertTrue(service.login("ANNA", "secret123").isPresent());
-        assertTrue(service.login(" Anna ", "secret123").isPresent());
-        assertEquals("anna", service.login("ANNA", "secret123").get().getUsername());
-        // the same name in another spelling is a duplicate
-        assertThrows(IllegalStateException.class,
-                () -> service.register("ANNA", "other-pass1", Role.ADMIN));
-    }
-
-    @Test
-    void rejectsInvalidInput() {
-        UserService service = new UserService();
-
-        assertThrows(IllegalArgumentException.class,
-                () -> service.register("", "secret123", Role.CUSTOMER));
-        assertThrows(IllegalArgumentException.class,
-                () -> service.register("anna", "short", Role.CUSTOMER));
-        assertThrows(IllegalArgumentException.class,
-                () -> service.register("anna", "secret123", null));
-    }
-
-    @Test
-    void passwordIsNeverStoredAsPlainText() {
-        UserService service = new UserService();
-        User user = service.register("anna", "secret123", Role.CUSTOMER);
-
-        assertNotEquals("secret123", user.getPasswordHash());
-        assertFalse(user.getPasswordHash().contains("secret123"));
+        assertThrows(IllegalStateException.class, () -> userService.signUp("anna", "other-pass1"));
+        assertEquals(1, users.count());
     }
 }

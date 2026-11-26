@@ -36,6 +36,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/${MARIADB_DATABASE}
       SPRING_DATASOURCE_USERNAME: ${MARIADB_USER}
       SPRING_DATASOURCE_PASSWORD: ${MARIADB_PASSWORD}
+      # Start accounts; ":-" means empty if not set in .env, then the app skips them
+      APP_ADMIN_USERNAME: ${APP_ADMIN_USERNAME:-}
+      APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD:-}
+      APP_RECEPTION_USERNAME: ${APP_RECEPTION_USERNAME:-}
+      APP_RECEPTION_PASSWORD: ${APP_RECEPTION_PASSWORD:-}
     ports:
       - "8080:8080"
     networks:

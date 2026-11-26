@@ -28,8 +28,11 @@ Packages in `hotel-app/src/main/java/hotel`:
 |`search`|Find the free rooms for a period and a number of guests|
 |`booking`|Book the cheapest free room that is big enough|
 |`reservation`|Confirm a reservation, change its dates without double booking, total price|
-|`user`|Sign-up, sign-in, roles (`CUSTOMER`, `RECEPTIONIST`, `ADMIN`), hashed passwords|
-|`app`|`Main`: console demo of all features|
+|`user`|User accounts in the database, sign-up (always `CUSTOMER`), BCrypt passwords, start accounts for `ADMIN` and `RECEPTIONIST`|
+|`security`|Login rules: form login for the pages, HTTP Basic for `/api/**` (only `ADMIN`)|
+|`web`|Login, sign-up and the start page per role (Thymeleaf templates)|
+|`room`|REST API `/api/rooms` for the admin|
+|`app`|`HotelApplication`: Spring Boot start class|
 
 ## Reports
 
