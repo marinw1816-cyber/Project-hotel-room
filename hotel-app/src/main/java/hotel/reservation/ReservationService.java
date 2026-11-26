@@ -2,6 +2,8 @@ package hotel.reservation;
 
 import hotel.room.RoomEntity;
 import hotel.room.RoomRepository;
+import hotel.user.UserEntity;
+import hotel.user.UserRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,7 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
  * Errors:
  * IllegalArgumentException = invalid input (dates, guests),
  * IllegalStateException = not possible now (room not free, already cancelled),
- * NoSuchElementException = room or reservation not found (also when it belongs to another user).
+ * NoSuchElementException = room, user or reservation not found (also when it belongs to another user).
+ *
+ * The customer methods get the username of the logged-in user (from Authentication).
+ * The reservation stores the link to the UserEntity (customer_id = userId).
  */
 @Service
 @Transactional
@@ -26,10 +31,12 @@ public class ReservationService {
 
     private final ReservationRepository reservations;
     private final RoomRepository rooms;
+    private final UserRepository users;
 
-    public ReservationService(ReservationRepository reservations, RoomRepository rooms) {
+    public ReservationService(ReservationRepository reservations, RoomRepository rooms, UserRepository users) {
         this.reservations = reservations;
         this.rooms = rooms;
+        this.users = users;
     }
 
     /** Free rooms for the period that are big enough, cheapest first. */
@@ -45,18 +52,19 @@ public class ReservationService {
             throw new IllegalArgumentException("User is required");
         }
         validate(checkIn, checkOut, guests, null);
+        UserEntity customer = findUser(customerUsername);
         RoomEntity room = lockRoom(roomNumber);
         if (room.getCapacity() < guests) {
             throw new IllegalArgumentException("Room " + roomNumber + " is too small for " + guests + " guests");
         }
         checkFree(roomNumber, checkIn, checkOut, NO_ID);
-        return reservations.save(new ReservationEntity(room, customerUsername, checkIn, checkOut, guests));
+        return reservations.save(new ReservationEntity(room, customer, checkIn, checkOut, guests));
     }
 
     /** "My reservations" of the user. */
     @Transactional(readOnly = true)
     public List<ReservationEntity> myReservations(String customerUsername) {
-        return reservations.findByCustomerUsernameOrderByCheckInAsc(customerUsername);
+        return reservations.findByCustomerUserIdOrderByCheckInAsc(findUser(customerUsername).getUserId());
     }
 
     /** The user cancels one of his own reservations. */
@@ -135,10 +143,16 @@ public class ReservationService {
                 .orElseThrow(() -> new NoSuchElementException("Reservation " + id + " not found"));
     }
 
+    private UserEntity findUser(String username) {
+        return users.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("User " + username + " not found"));
+    }
+
     /** A reservation of another user is "not found", so nobody can see or change other reservations. */
     private ReservationEntity findOwn(long id, String customerUsername) {
+        Long userId = findUser(customerUsername).getUserId();
         return reservations.findById(id)
-                .filter(r -> r.getCustomerUsername().equals(customerUsername))
+                .filter(r -> r.getCustomer().getUserId().equals(userId))
                 .orElseThrow(() -> new NoSuchElementException("Reservation " + id + " not found"));
     }
 

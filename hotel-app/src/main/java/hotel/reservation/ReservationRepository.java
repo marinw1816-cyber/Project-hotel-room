@@ -14,8 +14,8 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ReservationRepository extends JpaRepository<ReservationEntity, Long> {
 
-    /** "My reservations": all reservations of one customer, oldest check-in first. */
-    List<ReservationEntity> findByCustomerUsernameOrderByCheckInAsc(String customerUsername);
+    /** "My reservations": all reservations of one customer (by userId), oldest check-in first. */
+    List<ReservationEntity> findByCustomerUserIdOrderByCheckInAsc(Long userId);
 
     /** All reservations, for the reception. */
     List<ReservationEntity> findAllByOrderByCheckInAsc();

@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import hotel.app.HotelApplication;
 import hotel.room.RoomEntity;
 import hotel.room.RoomRepository;
+import hotel.user.UserRepository;
+import hotel.user.UserService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -33,14 +35,25 @@ class ReservationServiceTest {
     @Autowired
     private RoomRepository rooms;
 
+    @Autowired
+    private UserRepository users;
+
+    @Autowired
+    private UserService userService;
+
     /** Always in the future, so the "not in the past" rule never fails by accident. */
     private final LocalDate day1 = LocalDate.now().plusDays(10);
     private final LocalDate day4 = day1.plusDays(3);
 
     @BeforeEach
     void setUp() {
+        // reservations first, because they point to the rooms and users
         reservations.deleteAll();
+        users.deleteAll();
         rooms.deleteAll();
+        userService.signUp("anna", "secret123");
+        userService.signUp("ben", "secret123");
+        userService.signUp("carl", "secret123");
         rooms.save(new RoomEntity(101, 1, new BigDecimal("60.00")));
         rooms.save(new RoomEntity(102, 2, new BigDecimal("90.00")));
         rooms.save(new RoomEntity(201, 4, new BigDecimal("150.00")));
@@ -70,7 +83,7 @@ class ReservationServiceTest {
         ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
 
         ReservationEntity stored = reservations.findById(booked.getId()).orElseThrow();
-        assertEquals("anna", stored.getCustomerUsername());
+        assertEquals("anna", stored.getCustomer().getUsername());
         assertEquals(102, stored.getRoom().getRoomNumber().intValue());
         assertEquals(ReservationStatus.PENDING, stored.getStatus());
         assertEquals(3, stored.nights());
@@ -95,6 +108,7 @@ class ReservationServiceTest {
         assertThrows(IllegalArgumentException.class, () -> service.book("anna", 102, day1, day4, 0));
         assertThrows(IllegalArgumentException.class, () -> service.book(" ", 102, day1, day4, 2));
         assertThrows(NoSuchElementException.class, () -> service.book("anna", 999, day1, day4, 2));
+        assertThrows(NoSuchElementException.class, () -> service.book("nobody", 102, day1, day4, 2));
         assertEquals(0, reservations.count());
     }
 

@@ -15,8 +15,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import hotel.app.HotelApplication;
 import hotel.reservation.ReservationRepository;
 import hotel.reservation.ReservationService;
+import hotel.user.UserRepository;
+import hotel.user.UserService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +48,30 @@ class RoomControllerTest {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private UserRepository users;
+
+    @Autowired
+    private UserService userService;
+
     private MockMvc mvc;
 
     @BeforeEach
     void setUp() {
         // apply(springSecurity()): requests go through the Spring Security filters
         mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
-        // reservations first, because they point to the rooms
+        // reservations first, because they point to the rooms and users
         reservations.deleteAll();
+        users.deleteAll();
+        rooms.deleteAll();
+        userService.signUp("anna", "secret123");
+    }
+
+    /** No transaction in this class: clean up, so other test classes can delete their users. */
+    @AfterEach
+    void tearDown() {
+        reservations.deleteAll();
+        users.deleteAll();
         rooms.deleteAll();
     }
 

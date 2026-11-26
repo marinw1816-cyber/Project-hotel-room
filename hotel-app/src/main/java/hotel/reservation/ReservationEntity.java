@@ -1,6 +1,7 @@
 package hotel.reservation;
 
 import hotel.room.RoomEntity;
+import hotel.user.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,9 +35,10 @@ public class ReservationEntity {
     @JoinColumn(name = "room_number", nullable = false)
     private RoomEntity room;
 
-    /** ID of the customer: his username (unique login name in UserEntity, from Spring Security). */
-    @Column(nullable = false)
-    private String customerUsername;
+    /** Foreign key customer_id -> app_user: the ID of the customer is his userId. */
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "customer_id", nullable = false)
+    private UserEntity customer;
 
     @Column(nullable = false)
     private LocalDate checkIn;
@@ -55,9 +57,9 @@ public class ReservationEntity {
     protected ReservationEntity() {
     }
 
-    ReservationEntity(RoomEntity room, String customerUsername, LocalDate checkIn, LocalDate checkOut, int guests) {
+    ReservationEntity(RoomEntity room, UserEntity customer, LocalDate checkIn, LocalDate checkOut, int guests) {
         this.room = room;
-        this.customerUsername = customerUsername;
+        this.customer = customer;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.guests = guests;
@@ -71,8 +73,8 @@ public class ReservationEntity {
         return room;
     }
 
-    public String getCustomerUsername() {
-        return customerUsername;
+    public UserEntity getCustomer() {
+        return customer;
     }
 
     public LocalDate getCheckIn() {

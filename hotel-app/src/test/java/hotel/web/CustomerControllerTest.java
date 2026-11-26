@@ -18,6 +18,8 @@ import hotel.reservation.ReservationService;
 import hotel.reservation.ReservationStatus;
 import hotel.room.RoomEntity;
 import hotel.room.RoomRepository;
+import hotel.user.UserRepository;
+import hotel.user.UserService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -51,6 +53,12 @@ class CustomerControllerTest {
     @Autowired
     private RoomRepository rooms;
 
+    @Autowired
+    private UserRepository users;
+
+    @Autowired
+    private UserService userService;
+
     private MockMvc mvc;
 
     /** Always in the future, so the "not in the past" rule never fails by accident. */
@@ -60,8 +68,13 @@ class CustomerControllerTest {
     @BeforeEach
     void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+        // reservations first, because they point to the rooms and users
         reservations.deleteAll();
+        users.deleteAll();
         rooms.deleteAll();
+        // anna = the @WithMockUser name, bob = another customer
+        userService.signUp("anna", "secret123");
+        userService.signUp("bob", "secret123");
         rooms.save(new RoomEntity(102, 2, new BigDecimal("90.00")));
     }
 
@@ -96,7 +109,7 @@ class CustomerControllerTest {
                 .andExpect(redirectedUrl("/customer/reservations"))
                 .andExpect(flash().attribute("success", containsString("Room 102 booked")));
 
-        List<ReservationEntity> mine = reservations.findByCustomerUsernameOrderByCheckInAsc("anna");
+        List<ReservationEntity> mine = service.myReservations("anna");
         assertEquals(1, mine.size());
         assertEquals(ReservationStatus.PENDING, mine.get(0).getStatus());
 
@@ -115,7 +128,7 @@ class CustomerControllerTest {
         mvc.perform(bookRoom102())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attribute("error", containsString("not free")));
-        assertEquals(0, reservations.findByCustomerUsernameOrderByCheckInAsc("anna").size());
+        assertEquals(0, service.myReservations("anna").size());
     }
 
     @Test
