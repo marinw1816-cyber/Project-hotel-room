@@ -1,5 +1,6 @@
 package hotel.room;
 
+import hotel.reservation.ReservationRepository;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
@@ -22,9 +23,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class RoomController {
 
     private final RoomRepository rooms;
+    private final ReservationRepository reservations;
 
-    public RoomController(RoomRepository rooms) {
+    public RoomController(RoomRepository rooms, ReservationRepository reservations) {
         this.rooms = rooms;
+        this.reservations = reservations;
     }
 
     /** GET /api/rooms -> 200 with all rooms. */
@@ -67,10 +70,14 @@ public class RoomController {
         return RoomDto.from(rooms.save(room));
     }
 
-    /** DELETE /api/rooms/{roomNumber} -> 204, or 404. */
+    /** DELETE /api/rooms/{roomNumber} -> 204, 404, or 409 if the room has reservations. */
     @DeleteMapping("/{roomNumber}")
     public ResponseEntity<Void> delete(@PathVariable int roomNumber) {
-        rooms.delete(findOrThrow(roomNumber));
+        RoomEntity room = findOrThrow(roomNumber);
+        if (reservations.existsByRoomRoomNumber(roomNumber)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Room " + roomNumber + " has reservations and cannot be deleted");
+        }
+        rooms.delete(room);
         return ResponseEntity.noContent().build();
     }
 
@@ -79,7 +86,7 @@ public class RoomController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room " + roomNumber + " not found"));
     }
 
-    /** Same rules as hotel.model.Room: capacity > 0, price >= 0. */
+    /** Rules for a room: capacity > 0, price >= 0. */
     private static void validate(RoomDto body) {
         if (body.capacity() == null || body.capacity() <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Capacity must be positive");

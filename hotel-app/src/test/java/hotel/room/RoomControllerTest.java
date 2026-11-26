@@ -3,6 +3,7 @@ package hotel.room;
 import static org.hamcrest.Matchers.endsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -12,7 +13,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import hotel.app.HotelApplication;
+import hotel.reservation.ReservationRepository;
+import hotel.reservation.ReservationService;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +39,20 @@ class RoomControllerTest {
     @Autowired
     private RoomRepository rooms;
 
+    @Autowired
+    private ReservationRepository reservations;
+
+    @Autowired
+    private ReservationService reservationService;
+
     private MockMvc mvc;
 
     @BeforeEach
     void setUp() {
         // apply(springSecurity()): requests go through the Spring Security filters
         mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+        // reservations first, because they point to the rooms
+        reservations.deleteAll();
         rooms.deleteAll();
     }
 
@@ -141,5 +153,15 @@ class RoomControllerTest {
         assertFalse(rooms.existsById(101));
 
         mvc.perform(delete("/api/rooms/101")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void deleteRoomWithReservationsReturns409() throws Exception {
+        createRoom101();
+        LocalDate checkIn = LocalDate.now().plusDays(10);
+        reservationService.book("anna", 101, checkIn, checkIn.plusDays(2), 2);
+
+        mvc.perform(delete("/api/rooms/101")).andExpect(status().isConflict());
+        assertTrue(rooms.existsById(101));
     }
 }
