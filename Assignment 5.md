@@ -130,7 +130,21 @@ Role: step 1, review of Marin's step 2, report.
 - After both merges build #3 on `main` (`24a3a72`) was green and created `hotel-app:3`.
 
 ## Own part: Marin
-[FILL IN]
+Role: Jenkins on Windows, review of step 1, step 2 (CD part: Docker Build and Docker Push).
 
+- **My Jenkins (Windows):** I used the same `docker build` and `docker run` commands as in part 4, with `--group-add 0` already in it. `docker exec jenkins docker ps` worked at the first try, so I didn't get the "permission denied" from Patrick. Then setup wizard, suggested plugins, plugin "Docker Pipeline" and the job `hotel-app-pipeline`.
+- **Review of step 1 (PR #63):** I set the branch of my job to `*/feature-jenkins` and ran it. Build #1 was green with 51 tests. Then I approved and merged it on 24.11.
+- **Step 2, Jenkinsfile (PR #64):** branch `jenkins-docker-image` from `main`. I added:
+  - `parameters`: `PUSH_IMAGE` (default false), so the pipeline also works without Docker Hub credentials, and `DOCKERHUB_REPO` (default `marin971/hotel-app`).
+  - `environment`: `IMAGE_NAME` and `IMAGE_TAG` = build number, so we know which build made which image.
+  - Stage **Docker Build**: `docker.build` from the Docker Pipeline plugin with `hotel-app/Dockerfile`, then the tag `latest` on the same image.
+  - Stage **Docker Push**: only with `when { expression { params.PUSH_IMAGE } }`. `withCredentials` gives the user and the token from the Jenkins credentials `dockerhub`, login with `--password-stdin`, push of both tags, `docker logout` in `post { always }`.
+- **Test of step 2:** build #2 on `*/jenkins-docker-image`: Checkout, Build, Test and Docker Build green, Docker Push skipped. `docker exec jenkins docker image ls hotel-app` showed `hotel-app:2` and `hotel-app:latest` with the same image ID (`5ea99bff6517`), so it is one image with two names.
+- **Push to Docker Hub (26.11.):** I created a Docker Hub access token (Read & Write) and saved it in Jenkins as credentials of the type "Username with password" with the ID `dockerhub`. Then I set the job back to `*/main` and used "Build with Parameters" with `PUSH_IMAGE` ticked. Build #3 was green, Docker Push included. On Docker Hub, `marin971/hotel-app` has the tags `3` and `latest` with the same digest (`d1572a2b7538`). In the console the token is shown as `****`.
+- **What I saw:**
+  - The parameters are only visible ("Build with Parameters") after the first build with the new Jenkinsfile.
+  - Docker Build took 36 s in build #2 but only 2 s in build #3, because Docker reused the layers from the cache.
+  - The first push took almost 3 minutes, because all the layers were uploaded (161.58 MB compressed on Docker Hub, 580 MB local).
+- **Why a token and not my password:** the token only has the rights it needs, and I can delete it on Docker Hub without changing my password. It is only in the Jenkins credentials store, not in Git and not in this report.
 ## Own part: Seungheon
 [FILL IN]
