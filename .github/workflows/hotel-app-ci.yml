@@ -24,6 +24,8 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+          cache: maven
+          cache-dependency-path: hotel-app/pom.xml
 
       - name: Run tests
         working-directory: hotel-app
