@@ -74,7 +74,7 @@ Times in Jenkins are UTC (Finland is UTC+2), because the container has no time z
 ![Console of build #1: Tests run 51, BUILD SUCCESS, Maven container stopped and removed, Finished: SUCCESS](Images/a5_patrick_09_console.png)
 ![Test result: 51 tests in 7 packages, all passing](Images/a5_patrick_10_test_result.png)
 ![Trigger "Poll SCM" with H/5 * * * * comes from the Jenkinsfile, not set by hand](Images/a5_patrick_11_poll_scm.png)
-[FILL IN: screenshot PR #63]
+![PR #63 with my description, merged by Marin after his approve and his test on Windows](Images/a5_patrick_12_pr63.png)
 
 Marin's test of step 1 on Windows (review of PR #63):
 ![docker ps inside Jenkins works on Windows too](Images/a5_marin_docker_ps_in_jenkins.png)
