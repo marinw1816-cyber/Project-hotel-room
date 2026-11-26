@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 
 /**
  * A room as it is stored in the database (table "room").
- * hotel.model.Room stays unchanged: it is immutable, JPA needs its own class.
  */
 @Entity
 @Table(name = "room")

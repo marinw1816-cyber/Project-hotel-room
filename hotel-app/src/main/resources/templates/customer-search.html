@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: page(~{::title}, ~{::main})}">
+<head>
+    <title>Search rooms</title>
+</head>
+<body>
+<main>
+    <h1>Search rooms</h1>
+    <p><a th:href="@{/customer}">Back</a> | <a th:href="@{/customer/reservations}">My reservations</a></p>
+    <!-- Message from CustomerController, e.g. "Check-out must be after check-in" -->
+    <p th:if="${error}" th:text="${error}">Error</p>
+
+    <form th:action="@{/customer/search}" method="get">
+        <label>Check-in <input type="date" name="checkIn" th:value="${checkIn}" required></label>
+        <label>Check-out <input type="date" name="checkOut" th:value="${checkOut}" required></label>
+        <label>Guests <input type="number" name="guests" min="1" th:value="${guests}" required></label>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Only after a search without error -->
+    <div th:if="${rooms != null}">
+        <h2>Free rooms</h2>
+        <p th:if="${rooms.isEmpty()}">No free room for this period.</p>
+        <table th:unless="${rooms.isEmpty()}">
+            <tr>
+                <th>Room</th>
+                <th>Capacity</th>
+                <th>Price per night</th>
+                <th>Total price (<span th:text="${nights}">3</span> nights)</th>
+                <th></th>
+            </tr>
+            <tr th:each="room : ${rooms}">
+                <td th:text="${room.roomNumber}">101</td>
+                <td th:text="${room.capacity}">2</td>
+                <td th:text="${room.pricePerNight}">90.00</td>
+                <td th:text="${room.pricePerNight * nights}">270.00</td>
+                <td>
+                    <!-- th:action adds the CSRF token -->
+                    <form th:action="@{/customer/book}" method="post">
+                        <input type="hidden" name="roomNumber" th:value="${room.roomNumber}">
+                        <input type="hidden" name="checkIn" th:value="${checkIn}">
+                        <input type="hidden" name="checkOut" th:value="${checkOut}">
+                        <input type="hidden" name="guests" th:value="${guests}">
+                        <button type="submit">Book</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</main>
+</body>
+</html>

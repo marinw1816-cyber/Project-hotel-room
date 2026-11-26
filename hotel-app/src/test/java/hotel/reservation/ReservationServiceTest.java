@@ -1,84 +1,198 @@
 package hotel.reservation;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import hotel.model.Reservation;
-import hotel.model.ReservationStatus;
-import hotel.model.ReservationStore;
-import hotel.model.Room;
+import hotel.app.HotelApplication;
+import hotel.room.RoomEntity;
+import hotel.room.RoomRepository;
+import hotel.user.UserRepository;
+import hotel.user.UserService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.NoSuchElementException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Tests search, booking and changes with the H2 test database (no MariaDB needed).
+ * Every test runs in a transaction that is rolled back at the end, so the tests don't see each other's data.
+ */
+@SpringBootTest(classes = HotelApplication.class)
+@Transactional
 class ReservationServiceTest {
-    private final Room room = new Room(101, 2, new BigDecimal("89.90"));
-    private final LocalDate in = LocalDate.of(2026, 7, 1);
-    private final ReservationStore store = new ReservationStore();
-    private final ReservationService service = new ReservationService(store);
 
-    @Test
-    void confirmSetsPendingToConfirmed() {
-        Reservation r = new Reservation(room, "Anna", in, in.plusDays(2));
-        service.confirm(r);
-        assertEquals(ReservationStatus.CONFIRMED, r.getStatus());
+    @Autowired
+    private ReservationService service;
+
+    @Autowired
+    private ReservationRepository reservations;
+
+    @Autowired
+    private RoomRepository rooms;
+
+    @Autowired
+    private UserRepository users;
+
+    @Autowired
+    private UserService userService;
+
+    /** Always in the future, so the "not in the past" rule never fails by accident. */
+    private final LocalDate day1 = LocalDate.now().plusDays(10);
+    private final LocalDate day4 = day1.plusDays(3);
+
+    @BeforeEach
+    void setUp() {
+        // reservations first, because they point to the rooms and users
+        reservations.deleteAll();
+        users.deleteAll();
+        rooms.deleteAll();
+        userService.signUp("anna", "secret123");
+        userService.signUp("ben", "secret123");
+        userService.signUp("carl", "secret123");
+        rooms.save(new RoomEntity(101, 1, new BigDecimal("60.00")));
+        rooms.save(new RoomEntity(102, 2, new BigDecimal("90.00")));
+        rooms.save(new RoomEntity(201, 4, new BigDecimal("150.00")));
+    }
+
+    private static List<Integer> numbers(List<RoomEntity> list) {
+        return list.stream().map(RoomEntity::getRoomNumber).toList();
     }
 
     @Test
-    void confirmRejectsNonPending() {
-        Reservation r = new Reservation(room, "Anna", in, in.plusDays(2));
-        r.setStatus(ReservationStatus.CONFIRMED);
-        assertThrows(IllegalStateException.class, () -> service.confirm(r));
-        r.setStatus(ReservationStatus.CANCELLED);
-        assertThrows(IllegalStateException.class, () -> service.confirm(r));
+    void freeRoomsAreBigEnoughAndCheapestFirst() {
+        assertEquals(List.of(102, 201), numbers(service.findFreeRooms(day1, day4, 2)));
+        assertEquals(List.of(101, 102, 201), numbers(service.findFreeRooms(day1, day4, 1)));
     }
 
     @Test
-    void changeDatesReplacesReservationAndKeepsStatus() {
-        Reservation old = new Reservation(room, "Anna", in, in.plusDays(3));
-        store.add(old);
-        service.confirm(old);
-        Reservation updated = service.changeDates(old, in.plusDays(1), in.plusDays(5));
-        assertEquals(ReservationStatus.CANCELLED, old.getStatus());
-        assertEquals(ReservationStatus.CONFIRMED, updated.getStatus());
-        assertEquals("Anna", updated.getGuest());
-        assertEquals(in.plusDays(1), updated.getCheckIn());
-        assertEquals(in.plusDays(5), updated.getCheckOut());
-        assertTrue(store.findAll().contains(updated));
+    void bookedRoomIsNotFreeButBackToBackIsAllowed() {
+        service.book("anna", 102, day1, day4, 2);
+
+        assertEquals(List.of(201), numbers(service.findFreeRooms(day1.plusDays(1), day4.plusDays(1), 2)));
+        // check-out of anna and check-in on the same day: no overlap
+        assertEquals(List.of(102, 201), numbers(service.findFreeRooms(day4, day4.plusDays(2), 2)));
     }
 
     @Test
-    void changeDatesRejectsOverlapWithOtherReservation() {
-        Reservation old = new Reservation(room, "Anna", in, in.plusDays(2));
-        store.add(old);
-        store.add(new Reservation(room, "Ben", in.plusDays(3), in.plusDays(5)));
-        assertThrows(IllegalStateException.class, () -> service.changeDates(old, in.plusDays(1), in.plusDays(4)));
-        assertEquals(ReservationStatus.PENDING, old.getStatus());
-        assertEquals(2, store.findAll().size());
+    void bookSavesAPendingReservationWithTotalPrice() {
+        ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
+
+        ReservationEntity stored = reservations.findById(booked.getReservationId()).orElseThrow();
+        assertEquals("anna", stored.getCustomer().getUsername());
+        assertEquals(102, stored.getRoom().getRoomNumber().intValue());
+        assertEquals(ReservationStatus.PENDING, stored.getStatus());
+        assertEquals(3, stored.nights());
+        assertEquals(0, new BigDecimal("270.00").compareTo(stored.totalPrice()));
     }
 
     @Test
-    void changeDatesIgnoresCancelledAndOtherRooms() {
-        Reservation old = new Reservation(room, "Anna", in, in.plusDays(2));
-        store.add(old);
-        Reservation cancelled = new Reservation(room, "Ben", in.plusDays(3), in.plusDays(5));
-        store.add(cancelled);
-        store.cancel(cancelled);
-        store.add(new Reservation(new Room(102, 2, BigDecimal.TEN), "Cara", in, in.plusDays(6)));
-        Reservation updated = service.changeDates(old, in.plusDays(2), in.plusDays(5));
-        assertEquals(ReservationStatus.PENDING, updated.getStatus());
+    void doubleBookingIsBlocked() {
+        service.book("anna", 102, day1, day4, 2);
+
+        assertThrows(IllegalStateException.class, () -> service.book("ben", 102, day1.plusDays(2), day4.plusDays(2), 1));
+        assertEquals(1, reservations.count());
     }
 
     @Test
-    void changeDatesRejectsInvalidDatesWithoutCancelling() {
-        Reservation old = new Reservation(room, "Anna", in, in.plusDays(2));
-        store.add(old);
-        assertThrows(IllegalArgumentException.class, () -> service.changeDates(old, in.plusDays(3), in.plusDays(3)));
-        assertEquals(ReservationStatus.PENDING, old.getStatus());
+    void invalidBookingsAreRejected() {
+        assertThrows(IllegalArgumentException.class, () -> service.book("anna", 102, day4, day1, 2));
+        assertThrows(IllegalArgumentException.class, () -> service.book("anna", 102, day1, day1, 2));
+        assertThrows(IllegalArgumentException.class,
+                () -> service.book("anna", 102, LocalDate.now().minusDays(1), day4, 2));
+        assertThrows(IllegalArgumentException.class, () -> service.book("anna", 101, day1, day4, 2));
+        assertThrows(IllegalArgumentException.class, () -> service.book("anna", 102, day1, day4, 0));
+        assertThrows(IllegalArgumentException.class, () -> service.book(" ", 102, day1, day4, 2));
+        assertThrows(NoSuchElementException.class, () -> service.book("anna", 999, day1, day4, 2));
+        assertThrows(NoSuchElementException.class, () -> service.book("nobody", 102, day1, day4, 2));
+        assertEquals(0, reservations.count());
     }
 
     @Test
-    void totalPriceMultipliesPriceByNights() {
-        Reservation r = new Reservation(room, "Anna", in, in.plusDays(3));
-        assertEquals(new BigDecimal("269.70"), service.totalPrice(r));
+    void myReservationsShowsOnlyTheOwnOnes() {
+        service.book("anna", 102, day1, day4, 2);
+        service.book("ben", 201, day1, day4, 3);
+        service.book("anna", 101, day4, day4.plusDays(1), 1);
+
+        List<ReservationEntity> mine = service.myReservations("anna");
+        assertEquals(2, mine.size());
+        assertEquals(List.of(102, 101), mine.stream().map(r -> r.getRoom().getRoomNumber()).toList());
+    }
+
+    @Test
+    void cancelFreesTheRoom() {
+        ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
+
+        service.cancel(booked.getReservationId(), "anna");
+
+        assertEquals(ReservationStatus.CANCELLED, reservations.findById(booked.getReservationId()).orElseThrow().getStatus());
+        assertEquals(List.of(102, 201), numbers(service.findFreeRooms(day1, day4, 2)));
+        assertThrows(IllegalStateException.class, () -> service.cancel(booked.getReservationId(), "anna"));
+    }
+
+    @Test
+    void otherUsersCannotCancelOrChangeMyReservation() {
+        ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
+
+        assertThrows(NoSuchElementException.class, () -> service.cancel(booked.getReservationId(), "ben"));
+        assertThrows(NoSuchElementException.class,
+                () -> service.changeDates(booked.getReservationId(), "ben", day4, day4.plusDays(2)));
+        assertEquals(ReservationStatus.PENDING, reservations.findById(booked.getReservationId()).orElseThrow().getStatus());
+    }
+
+    @Test
+    void changeDatesMovesTheReservationOrKeepsTheOldDates() {
+        ReservationEntity anna = service.book("anna", 102, day1, day4, 2);
+        service.book("ben", 102, day4.plusDays(5), day4.plusDays(8), 1);
+
+        // own period may overlap with the old dates of the same reservation
+        service.changeDates(anna.getReservationId(), "anna", day1.plusDays(1), day4.plusDays(1));
+        assertEquals(day1.plusDays(1), reservations.findById(anna.getReservationId()).orElseThrow().getCheckIn());
+
+        // overlaps with ben: not possible, old dates stay
+        assertThrows(IllegalStateException.class,
+                () -> service.changeDates(anna.getReservationId(), "anna", day4.plusDays(4), day4.plusDays(6)));
+        ReservationEntity stored = reservations.findById(anna.getReservationId()).orElseThrow();
+        assertEquals(day1.plusDays(1), stored.getCheckIn());
+        assertEquals(day4.plusDays(1), stored.getCheckOut());
+    }
+
+    @Test
+    void cancelledReservationCannotBeChanged() {
+        ReservationEntity booked = service.book("anna", 102, day1, day4, 2);
+        service.cancel(booked.getReservationId(), "anna");
+
+        assertThrows(IllegalStateException.class,
+                () -> service.changeDates(booked.getReservationId(), "anna", day4, day4.plusDays(2)));
+    }
+
+    @Test
+    void receptionSeesAllAndChangesStatus() {
+        ReservationEntity anna = service.book("anna", 102, day1, day4, 2);
+        service.book("ben", 201, day1, day4, 3);
+        assertEquals(2, service.allReservations().size());
+
+        service.changeStatus(anna.getReservationId(), ReservationStatus.CONFIRMED);
+        assertEquals(ReservationStatus.CONFIRMED, reservations.findById(anna.getReservationId()).orElseThrow().getStatus());
+
+        // cancelled, then the room is booked by someone else: anna's reservation can't be opened again
+        service.changeStatus(anna.getReservationId(), ReservationStatus.CANCELLED);
+        service.book("carl", 102, day1, day4, 2);
+        assertThrows(IllegalStateException.class, () -> service.changeStatus(anna.getReservationId(), ReservationStatus.CONFIRMED));
+    }
+
+    @Test
+    void receptionChangesDatesOfAnyReservation() {
+        ReservationEntity anna = service.book("anna", 102, day1, day4, 2);
+
+        service.changeDatesByStaff(anna.getReservationId(), day4, day4.plusDays(2));
+
+        ReservationEntity stored = reservations.findById(anna.getReservationId()).orElseThrow();
+        assertEquals(day4, stored.getCheckIn());
+        assertEquals(day4.plusDays(2), stored.getCheckOut());
     }
 }
