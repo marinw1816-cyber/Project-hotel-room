@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: page(~{::title}, ~{::main})}">
+<head>
+    <title>My reservations</title>
+</head>
+<body>
+<main>
+    <h1>My reservations</h1>
+    <p><a th:href="@{/customer}">Back</a> | <a th:href="@{/customer/search}">Search rooms</a></p>
+    <!-- Messages from CustomerController after a redirect -->
+    <p th:if="${success}" th:text="${success}">Done</p>
+    <p th:if="${error}" th:text="${error}">Error</p>
+
+    <p th:if="${reservations.isEmpty()}">You have no reservations yet.</p>
+    <table th:unless="${reservations.isEmpty()}">
+        <tr>
+            <th>Room</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Nights</th>
+            <th>Total price</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        <tr th:each="r : ${reservations}">
+            <td th:text="${r.room.roomNumber}">101</td>
+            <td th:text="${r.checkIn}">2026-12-01</td>
+            <td th:text="${r.checkOut}">2026-12-04</td>
+            <td th:text="${r.nights()}">3</td>
+            <td th:text="${r.totalPrice()}">270.00</td>
+            <td th:text="${r.status}">PENDING</td>
+            <td>
+                <!-- Only for reservations that are not cancelled; th:action adds the CSRF token -->
+                <th:block th:if="${r.status.name() != 'CANCELLED'}">
+                    <form th:action="@{/customer/reservations/{id}/cancel(id=${r.id})}" method="post">
+                        <button type="submit">Cancel</button>
+                    </form>
+                    <form th:action="@{/customer/reservations/{id}/dates(id=${r.id})}" method="post">
+                        <input type="date" name="checkIn" th:value="${r.checkIn}" required>
+                        <input type="date" name="checkOut" th:value="${r.checkOut}" required>
+                        <button type="submit">Change dates</button>
+                    </form>
+                </th:block>
+            </td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>
