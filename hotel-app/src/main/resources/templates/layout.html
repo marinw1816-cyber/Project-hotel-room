@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!-- Shared frame for all pages: each page passes its <title> and its <main> -->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="page(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="${title}">Hotel</title>
+</head>
+<body>
+<header>
+    <strong>Hotel</strong>
+    <!-- Only shown after login -->
+    <span sec:authorize="isAuthenticated()">
+        | User: <span sec:authentication="name">name</span>
+        | Role:
+        <span sec:authorize="hasRole('ADMIN')">ADMIN</span>
+        <span sec:authorize="hasRole('RECEPTIONIST')">RECEPTIONIST</span>
+        <span sec:authorize="hasRole('CUSTOMER')">CUSTOMER</span>
+        <!-- Logout must be a POST; th:action adds the CSRF token -->
+        <form th:action="@{/logout}" method="post" style="display: inline">
+            <button type="submit">Logout</button>
+        </form>
+    </span>
+</header>
+<hr>
+<main th:replace="${content}">Page content</main>
+</body>
+</html>

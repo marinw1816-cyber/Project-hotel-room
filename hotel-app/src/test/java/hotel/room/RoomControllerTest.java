@@ -3,6 +3,7 @@ package hotel.room;
 import static org.hamcrest.Matchers.endsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -17,12 +18,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 /** Tests the REST API with the H2 test database (no MariaDB needed). */
 @SpringBootTest(classes = HotelApplication.class)
+// Every request runs as a logged-in ADMIN, the only role allowed on /api/**
+@WithMockUser(username = "admin", roles = "ADMIN")
 class RoomControllerTest {
 
     @Autowired
@@ -35,7 +39,8 @@ class RoomControllerTest {
 
     @BeforeEach
     void setUp() {
-        mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        // apply(springSecurity()): requests go through the Spring Security filters
+        mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
         rooms.deleteAll();
     }
 

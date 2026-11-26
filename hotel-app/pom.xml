@@ -36,6 +36,21 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
+    <!-- Login, roles and password hashing -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <!-- HTML pages from templates in src/main/resources/templates -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <!-- sec: attributes in templates (user name, role checks); version from Spring Boot -->
+    <dependency>
+      <groupId>org.thymeleaf.extras</groupId>
+      <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+    </dependency>
     <!-- MariaDB JDBC driver, only needed at runtime -->
     <dependency>
       <groupId>org.mariadb.jdbc</groupId>
@@ -54,6 +69,12 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- Test tools for security: test users, login requests, CSRF tokens -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -62,10 +83,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <!-- Two main methods exist (Main, HotelApplication), so name the start class -->
-          <mainClass>hotel.app.HotelApplication</mainClass>
-        </configuration>
       </plugin>
     </plugins>
   </build>
